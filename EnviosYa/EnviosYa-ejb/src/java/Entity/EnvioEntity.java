@@ -6,6 +6,7 @@
 package Entity;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,17 +22,91 @@ public class EnvioEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+    
+    @Column(length = 1000)
+    private String descripcion;
+    
+    private ClienteEntity clienteEnvia;
+    private ClienteEntity clienteRecibe;
+    private CadeteEntity unCadete;
+    private VehiculoEntity unVehiculo;
+    
+    @Column(length = 500)
+    private String direccionRetiro;
+    
+    @Column(length = 500)
+    private String direccionRecibo;
 
+    //CONSTRUCTOR
+    public EnvioEntity() {
+    }
     
-    
+    //SET AND GET
     public Integer getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Integer id) {    
         this.id = id;
     }
 
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public ClienteEntity getClienteEnvia() {
+        return clienteEnvia;
+    }
+
+    public void setClienteEnvia(ClienteEntity clienteEnvia) {
+        this.clienteEnvia = clienteEnvia;
+    }
+
+    public ClienteEntity getClienteRecibe() {
+        return clienteRecibe;
+    }
+
+    public void setClienteRecibe(ClienteEntity clienteRecibe) {
+        this.clienteRecibe = clienteRecibe;
+    }
+
+    public CadeteEntity getUnCadete() {
+        return unCadete;
+    }
+
+    public void setUnCadete(CadeteEntity unCadete) {
+        this.unCadete = unCadete;
+    }
+
+    public VehiculoEntity getUnVehiculo() {
+        return unVehiculo;
+    }
+
+    public void setUnVehiculo(VehiculoEntity unVehiculo) {
+        this.unVehiculo = unVehiculo;
+    }
+
+    public String getDireccionRetiro() {
+        return direccionRetiro;
+    }
+
+    public void setDireccionRetiro(String direccionRetiro) {
+        this.direccionRetiro = direccionRetiro;
+    }
+
+    public String getDireccionRecibo() {
+        return direccionRecibo;
+    }
+    
+    public void setDireccionRecibo(String direccionRecibo) {    
+        this.direccionRecibo = direccionRecibo;
+    }
+
+    //METODOS
     @Override
     public int hashCode() {
         int hash = 0;
@@ -41,7 +116,7 @@ public class EnvioEntity implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
+        
         if (!(object instanceof EnvioEntity)) {
             return false;
         }

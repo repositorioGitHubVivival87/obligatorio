@@ -9,7 +9,7 @@ package Entidades;
  *
  * @author Vivi
  */
-public class Vehiculo {
+public class Vehiculo{
     private Integer id;
     private String matricula;
     private String descripcion;

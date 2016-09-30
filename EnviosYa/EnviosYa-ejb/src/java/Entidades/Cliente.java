@@ -5,23 +5,23 @@
  */
 package Entidades;
 
+
 /**
  *
  * @author Vivi
  */
-public class Cliente {
+public class Cliente{
     private Integer id;
     private Integer ci;
     private String nombre;
     private String apellido;
     private String email;
-    private String nuevo;
 
     //CONSTRUCTOR
     public Cliente() {
     }
 
-    //SET AND GER
+    //SET AND GET
     public Integer getId() {
         return id;
     }

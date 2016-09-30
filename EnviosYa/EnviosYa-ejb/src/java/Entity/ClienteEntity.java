@@ -11,31 +11,33 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.NotNull;
 
 /**
  *
  * @author Vivi
  */
+
 @Entity
 public class ClienteEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-
+    
     @Column(unique = true)
     private Integer ci;
     
-    @NotNull
     @Column(length = 300)
     private String nombre;
-    
-    @NotNull
+
     @Column(length = 300)
     private String apellido;
     
     private String email;
+
+    //CONSTRUCTOR
+    public ClienteEntity() {
+    }
 
     
     //SET AND GET
@@ -79,6 +81,7 @@ public class ClienteEntity implements Serializable {
         this.email = email;
     }
 
+    //METODOS
     @Override
     public int hashCode() {
         int hash = 0;

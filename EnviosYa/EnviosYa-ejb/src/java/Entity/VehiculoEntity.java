@@ -6,10 +6,12 @@
 package Entity;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -22,6 +24,18 @@ public class VehiculoEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
+    @Column(length = 20)
+    @NotNull
+    private String matricula;
+    
+    @Column(length = 1000)
+    private String descripcion;
+    
+    //CONSTRUCTOR
+    public VehiculoEntity() {
+    }
+    
+    //SET AND GET
     public Integer getId() {
         return id;
     }
@@ -30,6 +44,23 @@ public class VehiculoEntity implements Serializable {
         this.id = id;
     }
 
+    public String getMatricula() {
+        return matricula;
+    }
+
+    public void setMatricula(String matricula) {
+        this.matricula = matricula;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    //METODOS
     @Override
     public int hashCode() {
         int hash = 0;
@@ -39,7 +70,6 @@ public class VehiculoEntity implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof VehiculoEntity)) {
             return false;
         }

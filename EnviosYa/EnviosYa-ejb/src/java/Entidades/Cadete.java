@@ -5,6 +5,8 @@
  */
 package Entidades;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Vivi
@@ -20,7 +22,7 @@ public class Cadete {
     public Cadete() {
     }
 
-    //SET AND GER
+    //SET AND GET
     public Integer getId() {
         return id;
     }

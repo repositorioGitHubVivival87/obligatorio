@@ -23,7 +23,7 @@ public class Envio {
     public Envio() {
     }
 
-    //SET AND GER
+    //SET AND GET
     public Integer getId() {
         return id;
     }

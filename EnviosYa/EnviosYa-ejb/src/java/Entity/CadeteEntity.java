@@ -5,13 +5,15 @@
  */
 package Entity;
 
+import Entidades.Vehiculo;
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.NotNull;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -27,15 +29,20 @@ public class CadeteEntity implements Serializable {
     @Column(unique = true)
     private Integer ci;
     
-    @NotNull
     @Column(length = 300)
     private String nombre;
-    
-    @NotNull
+
     @Column(length = 300)
     private String apellido;
     
     private String email;
+    
+    @OneToMany
+    private List<VehiculoEntity> vehiculos;
+
+    //CONSTRUCTOR
+    public CadeteEntity() {
+    }
 
     
     //SET AND GET
@@ -55,6 +62,14 @@ public class CadeteEntity implements Serializable {
         this.ci = ci;
     }
 
+    public List<VehiculoEntity> getVehiculos() {
+        return vehiculos;
+    }
+
+    public void setVehiculos(List<VehiculoEntity> vehiculos) {
+        this.vehiculos = vehiculos;
+    }
+    
     public String getNombre() {
         return nombre;
     }
