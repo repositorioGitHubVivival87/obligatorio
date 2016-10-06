@@ -108,7 +108,7 @@ public class VehiculoBean {
         return vehiculo;
     }
 
-     public VehiculoEntity asociarCadeteVehiculos(Integer idVehiculo, Integer idCadete) {
+    public VehiculoEntity asociarCadeteVehiculos(Integer idVehiculo, Integer idCadete) {
         CadeteEntity cadete = null;
         VehiculoEntity vehiculo = null;
         try {
