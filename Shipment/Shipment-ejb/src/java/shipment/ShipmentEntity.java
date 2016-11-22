@@ -6,26 +6,50 @@
 
 package shipment;
 
+import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 /**
  *
  * @author Vivi
  */
-public class ShipmentEntity {
+@Entity
+public class ShipmentEntity implements Serializable {
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+    
+    @Column(length = 1000)
     private String descripcion;
+    
+    @Column(length = 500)
     private String direccionEnvia;
+    
+    @Column(length = 500)
     private String direccionDestinatario;
+
+    @Column(length = 500)
     private String formaDePago;
+    
+    @Column(length = 10)
     private Double comision;
+    
+    @Column(length = 1000)
     private String foto;
+    
+    @Column(length = 1)
     private String estado;
     
     
     //CONSTRUCTOR
     public ShipmentEntity() {
     }
-
+    
     //SET AND GET
     public Integer getId() {
         return id;

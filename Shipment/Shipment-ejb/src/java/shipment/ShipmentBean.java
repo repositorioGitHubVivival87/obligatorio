@@ -65,10 +65,10 @@ public class ShipmentBean {
         }
     }
     
-    public ShipmentPersistence solicitudEnvio(Integer unCadete, Integer unVehiculo, 
+    public ShipmentEntity solicitudEnvio(Integer unCadete, Integer unVehiculo, 
             Integer clienteEnvia, Integer clienteRecibe,
             String direccionRetiro, String direccionRecibo, String descripcion) {
-        ShipmentPersistence env = null;
+        ShipmentEntity env = null;
         try {
             //registrar fecha y hora del envio
         } catch (Exception exe) {
@@ -78,8 +78,8 @@ public class ShipmentBean {
         return env;
     }
 
-    public List<ShipmentPersistence> consulta() {
-        List<ShipmentPersistence> listRetorno = new ArrayList();
+    public List<ShipmentEntity> consulta() {
+        List<ShipmentEntity> listRetorno = new ArrayList();
         try {
             //lista de todos los envios
             listRetorno = em
