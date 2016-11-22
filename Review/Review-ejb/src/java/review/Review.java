@@ -6,35 +6,22 @@
 
 package review;
 
-import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
 /**
  *
  * @author Vivi
  */
-public class ReviewPersistence implements Serializable {
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-        
-    @Column(length = 300)
-    private String comentario;
+public class Review {
 
-    @Column(length = 300)
+    private Integer id;
+    private String comentario;
+    private Integer rating;
     private String estado;
     
-    private Integer rating;
-    
-  
+
     //CONSTRUCTOR
-    public ReviewPersistence() {
+    public Review() {
     }
-    
+
     //SET AND GET
     public Integer getId() {
         return id;
@@ -52,14 +39,6 @@ public class ReviewPersistence implements Serializable {
         this.comentario = comentario;
     }
 
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
     public Integer getRating() {
         return rating;
     }
@@ -68,4 +47,12 @@ public class ReviewPersistence implements Serializable {
         this.rating = rating;
     }
 
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+    
 }

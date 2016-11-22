@@ -35,8 +35,8 @@ public class ReviewBean {
         System.out.println("INSTANCIA REVIEW BEAN");
     }
     
-    public ReviewPersistence agregarReview(String comentario, Integer rating, String estado) {
-        ReviewPersistence review = null;
+    public ReviewEntity agregarReview(String comentario, Integer rating, String estado) {
+        ReviewEntity review = null;
         try {
             
 
@@ -47,8 +47,8 @@ public class ReviewBean {
         return review;
     }
 
-    public ReviewPersistence modificarReview(Integer id, String comentario, Integer rating, String estado) {
-        ReviewPersistence review = null;
+    public ReviewEntity modificarReview(Integer id, String comentario, Integer rating, String estado) {
+        ReviewEntity review = null;
         try {
            
 
@@ -62,7 +62,7 @@ public class ReviewBean {
     public boolean eliminarReview(Integer id) {
         boolean ret = false;
         try {
-            ReviewPersistence review = em.find(ReviewPersistence.class, id);
+            ReviewEntity review = em.find(ReviewEntity.class, id);
             em.remove(review);
             ret = true;
         } catch (Exception exe) {
@@ -72,8 +72,8 @@ public class ReviewBean {
         return ret;
     }
 
-    public List<ReviewPersistence> listarReview() {
-        List<ReviewPersistence> list = new ArrayList();
+    public List<ReviewEntity> listarReview() {
+        List<ReviewEntity> list = new ArrayList();
         try {
             list = em
                     .createQuery("select c from ReviewEntity c")
@@ -85,8 +85,8 @@ public class ReviewBean {
         return list;
     }
 
-    public ReviewEntity buscarReview(Integer id) {
-        ReviewEntity review = new ReviewEntity();
+    public Review buscarReview(Integer id) {
+        Review review = new Review();
         try {
 
         } catch (Exception exe) {
