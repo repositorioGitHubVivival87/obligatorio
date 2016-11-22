@@ -6,21 +6,37 @@
 
 package notification;
 
+import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 /**
  *
  * @author Vivi
  */
-public class NotificationEntity {
-
+@Entity
+public class NotficationEntity implements Serializable {
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+    
+    @Column(length = 300)
     private String emailEmisor;
+
+    @Column(length = 300)
     private String emailReceptor;
+
+    @Column(length = 50000)
     private String mensaje;
-
+    
     //CONSTRUCTOR
-    public NotificationEntity() {
+    public NotficationEntity() {
     }
-
+    
     //SET AND GET
     public Integer getId() {
         return id;
@@ -53,5 +69,5 @@ public class NotificationEntity {
     public void setMensaje(String mensaje) {
         this.mensaje = mensaje;
     }
-    
+
 }

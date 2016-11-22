@@ -35,8 +35,8 @@ public class NotificationBean {
         System.out.println("INSTANCIA NOTIFICATION BEAN");
     }
     
-    public NotficationPersistence agregarNotification(String emailEmisor, String emailReceptor, String mensaje) {
-        NotficationPersistence not = null;
+    public NotficationEntity agregarNotification(String emailEmisor, String emailReceptor, String mensaje) {
+        NotficationEntity not = null;
         try {
             
 
@@ -49,9 +49,9 @@ public class NotificationBean {
         return not;
     }
 
-    public NotficationPersistence modificarNotification(Integer id, 
+    public NotficationEntity modificarNotification(Integer id, 
             String emailEmisor, String emailReceptor, String mensaje) {
-        NotficationPersistence not = null;
+        NotficationEntity not = null;
         try {
             String ret = "";
         } catch (Exception exe) {
@@ -64,7 +64,7 @@ public class NotificationBean {
     public boolean eliminarNotification(Integer id) {
         boolean ret = false;
         try {
-            NotficationPersistence not = em.find(NotficationPersistence.class, id);
+            NotficationEntity not = em.find(NotficationEntity.class, id);
             em.remove(not);
             ret = true;
 
@@ -75,8 +75,8 @@ public class NotificationBean {
         return ret;
     }
 
-    public List<NotficationPersistence> listarNotifications() {
-        List<NotficationPersistence> list = new ArrayList();
+    public List<NotficationEntity> listarNotifications() {
+        List<NotficationEntity> list = new ArrayList();
         try {
             list = em
                     .createQuery("select c from NotificationPersistence c")
@@ -88,8 +88,8 @@ public class NotificationBean {
         return list;
     }
 
-    public NotficationPersistence buscarNotificarion(Integer id) {
-        NotficationPersistence not = new NotficationPersistence();
+    public NotficationEntity buscarNotificarion(Integer id) {
+        NotficationEntity not = new NotficationEntity();
         try {
             String ret = "";
         } catch (Exception exe) {
