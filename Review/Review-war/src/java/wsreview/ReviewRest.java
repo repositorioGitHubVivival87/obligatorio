@@ -58,15 +58,92 @@ public class ReviewRest {
     
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public String agregar(@QueryParam("comment") String comment, 
+    public String altaReview(@QueryParam("idEnvio") Integer idEnvio) {
+        //da de alta una review con ese idEnvio, comentario "", raiting 0, y estado "pending"
+        return gson.toJson("");
+    }
+    
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String calificarServicioYCadete(@QueryParam("idEnvio") Integer idEnvio, 
+            @QueryParam("idCadete") Integer idCadete,
             @QueryParam("rating") Integer rating, 
-            @QueryParam("status") String status) {
-        return gson.toJson(review.agregarReview(comment, rating, status));
+            @QueryParam("comment") String comentario,
+            @QueryParam("idCliente") Integer idCliente) {
+        return gson.toJson("");
+    }
+    
+    @GET 
+    @Produces(MediaType.APPLICATION_JSON)
+    public String validarCliente(@QueryParam("idCliente") Integer idCliente) {
+        return gson.toJson("");
     }
 
-    @DELETE
-    @Consumes(MediaType.APPLICATION_JSON)
-    public String eliminar(@QueryParam("id") int id) {
-        return gson.toJson(review.eliminarReview(id));
+    @GET 
+    @Produces(MediaType.APPLICATION_JSON)
+    public String validarReviewNoDuplicado(@QueryParam("idEnvio") Integer idEnvio) {
+        //valida que no haya otra review para ese idEnvio
+        return gson.toJson("");
     }
+    
+    @GET 
+    @Produces(MediaType.APPLICATION_JSON)
+    public String validarComentario(@QueryParam("comentario") String comentario) {
+        //valida que tenga una cantidad minima de palabras
+        return gson.toJson("");
+    }
+    
+    @GET 
+    @Produces(MediaType.APPLICATION_JSON)
+    public String validarBuenVocabulario(@QueryParam("comentario") String comentario) {
+        //valida que las palabras no esten en una "lista negra de palabras"
+        return gson.toJson("");
+    }
+    
+    @GET 
+    @Produces(MediaType.APPLICATION_JSON)
+    public String calificarSemantica(@QueryParam("comentario") String comentario) {
+        //valida que la semantica del comentario sea correcto
+        return gson.toJson("");
+    }
+    
+    @GET 
+    @Produces(MediaType.APPLICATION_JSON)
+    public String notificarReviewCreada(@QueryParam("idReview") Integer idReview) {
+        //Se envia la review a los distintos destinatarios para disparar otros procesos de negocio. 
+        //Se comunica con el modulo Notification
+        return gson.toJson("");
+    }
+    
+    @GET 
+    @Produces(MediaType.APPLICATION_JSON)
+    public String listarEnviosPendientesCalificacion(@QueryParam("idCliente") Integer idCliente) {
+        //pide a shipment todos los envios de este idCliente
+    //si no tiene review para cada shipment lo agrego a la lista a retornar
+        return gson.toJson("");
+    }
+
+    @GET 
+    @Produces(MediaType.APPLICATION_JSON)
+    public String listarCalificacionesCadete(@QueryParam("idCadete") Integer idCadete) {
+        //pide a shipment todos los envios de este idCadete
+        //si tiene review para cada shipment lo agrego a la lista a retornar
+        return gson.toJson("");
+    }
+    
+    @GET 
+    @Produces(MediaType.APPLICATION_JSON)
+    public String rechazarCalificacionCadete(@QueryParam("idCliente") Integer idCliente) {
+        //llama al metodo anterior: listarCalificacionesCadete
+        // y puede setear el estado de la review en rechazado(rejected)
+        return gson.toJson("");
+    }
+    
+    @GET 
+    @Produces(MediaType.APPLICATION_JSON)
+    public String calificacionNoAprobada(@QueryParam("idCliente") Integer idCliente) {
+        //pide a shipment todos los envios con  reviews "no aprobado" y lo agrego a la lista a retornar
+        return gson.toJson("");
+    }
+    
 }
