@@ -110,4 +110,30 @@ public class ShipmentRest {
             @PathParam("idCadete4") Integer idCadete4) {
         return "";
     }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String asignarEnvio(@PathParam("idCadete") Integer idCadete,
+            @PathParam("idEnvio") Integer idEnvio) {
+        return "";
+    }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String calcularCostoEnvio(@PathParam("foto") String foto) {
+        return "";
+    }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String notificarRecepcionEnvio(@PathParam("idEnvio") Integer idEnvio) {
+        return "";
+    }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String listarEnviosPorCliente(@PathParam("idCliente") Integer idCliente) {
+        // lista ordenada por fecha-hora de mayor a menor, para el RF6
+        return "";
+    }
 }
