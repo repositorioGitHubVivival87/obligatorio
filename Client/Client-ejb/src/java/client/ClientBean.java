@@ -35,10 +35,10 @@ public class ClientBean {
         System.out.println("INSTANCIA CLIENT BEAN");
     }
     
-    public ClientPersistence agregarCliente(int ci, String nombre, String apellido, String email) {
-        ClientPersistence cli = null;
+    public ClientEntity agregarCliente(int ci, String nombre, String apellido, String email) {
+        ClientEntity cli = null;
         try {
-            cli = new ClientPersistence();
+            cli = new ClientEntity();
             cli.setCi(ci);
             cli.setNombre(nombre);
             cli.setApellido(apellido);
@@ -53,11 +53,11 @@ public class ClientBean {
         return cli;
     }
 
-    public ClientPersistence modificarCliente(Integer id, Integer ci, String nombre, String apellido, String email) {
-        ClientPersistence cli = null;
+    public ClientEntity modificarCliente(Integer id, Integer ci, String nombre, String apellido, String email) {
+        ClientEntity cli = null;
         boolean estaCi = false;
         try {
-            List<ClientPersistence> list = em
+            List<ClientEntity> list = em
                     .createQuery("select c from ClientPersistence c")
                     .getResultList();
             for (int i = 0; i < list.size(); i++) {
@@ -67,14 +67,14 @@ public class ClientBean {
             }
             for (int i = 0; i < list.size(); i++) {
                 if (list.get(i).getId().equals(id) && estaCi && list.get(i).getCi().equals(ci)) {
-                    cli = em.find(ClientPersistence.class, id);
+                    cli = em.find(ClientEntity.class, id);
                     cli.setNombre(nombre);
                     cli.setApellido(apellido);
                     cli.setEmail(email);
                     em.merge(cli);
                 } else {
                     if (list.get(i).getId().equals(id) && !estaCi) {
-                        cli = em.find(ClientPersistence.class, id);
+                        cli = em.find(ClientEntity.class, id);
                         cli.setCi(ci);
                         cli.setNombre(nombre);
                         cli.setApellido(apellido);
@@ -93,7 +93,7 @@ public class ClientBean {
     public boolean eliminarCliente(Integer id) {
         boolean ret = false;
         try {
-            ClientPersistence cli = em.find(ClientPersistence.class, id);
+            ClientEntity cli = em.find(ClientEntity.class, id);
             em.remove(cli);
             ret = true;
 
@@ -104,8 +104,8 @@ public class ClientBean {
         return ret;
     }
 
-    public List<ClientPersistence> listarClientes() {
-        List<ClientPersistence> list = new ArrayList();
+    public List<ClientEntity> listarClientes() {
+        List<ClientEntity> list = new ArrayList();
         try {
             list = em
                     .createQuery("select c from ClienteEntity c")
@@ -117,10 +117,10 @@ public class ClientBean {
         return list;
     }
 
-    public ClientEntity buscarClientes(Integer id) {
-        ClientEntity cli = new ClientEntity();
+    public Client buscarClientes(Integer id) {
+        Client cli = new Client();
         try {
-            ClientPersistence ent = em.find(ClientPersistence.class, id);
+            ClientEntity ent = em.find(ClientEntity.class, id);
             cli.setId(ent.getId());
             cli.setNombre(ent.getNombre());
             cli.setApellido(ent.getApellido());
