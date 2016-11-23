@@ -6,39 +6,20 @@
 
 package cadet;
 
-import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotNull;
-
 /**
  *
  * @author Vivi
  */
+public class Vehicle {
 
-public class VehiclePersistence implements Serializable {
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-
-    @Column(length = 20)
-    @NotNull
     private String matricula;
-    
-    @Column(length = 1000)
     private String descripcion;
-    
-    @ManyToOne
-    private CadetPersistence cadete;
 
     //CONSTRUCTOR
-    public VehiclePersistence() {
+    public Vehicle() {
     }
-    
+
     //SET AND GET
     public Integer getId() {
         return id;
@@ -63,13 +44,4 @@ public class VehiclePersistence implements Serializable {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-
-    public CadetPersistence getCadete() {
-        return cadete;
-    }
-
-    public void setCadete(CadetPersistence cadete) {
-        this.cadete = cadete;
-    }
-    
 }

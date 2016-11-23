@@ -6,37 +6,22 @@
 
 package cadet;
 
-import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
 /**
  *
  * @author Vivi
  */
-public class CadetPersistence implements Serializable {
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-    
-    @Column(unique = true)
-    private Integer ci;
-    
-    @Column(length = 300)
-    private String nombre;
+public class Cadet {
 
-    @Column(length = 300)
+    private Integer id;
+    private Integer ci;
+    private String nombre;
     private String apellido;
-    
     private String email;
-  
+
     //CONSTRUCTOR
-    public CadetPersistence() {
+    public Cadet() {
     }
-    
+
     //SET AND GET
     public Integer getId() {
         return id;
@@ -77,5 +62,4 @@ public class CadetPersistence implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
-    
 }

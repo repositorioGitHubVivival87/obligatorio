@@ -35,8 +35,8 @@ public class VehicleBean {
         System.out.println("INSTANCIA VEHICLE BEAN");
     }
     
-    public VehicleEntity agregarVehiculo(String matricula, String descripcion) {
-        VehicleEntity vehiculo = new VehicleEntity();
+    public Vehicle agregarVehiculo(String matricula, String descripcion) {
+        Vehicle vehiculo = new Vehicle();
         try {
             vehiculo.setMatricula(matricula);
             vehiculo.setDescripcion(descripcion);
@@ -48,10 +48,10 @@ public class VehicleBean {
         return vehiculo;
     }
 
-    public VehicleEntity modificarVehiculo(Integer id, String matricula, String descripcion) {
-        VehicleEntity vehiculo = null;
+    public Vehicle modificarVehiculo(Integer id, String matricula, String descripcion) {
+        Vehicle vehiculo = null;
         try {
-            vehiculo = em.find(VehicleEntity.class, id);
+            vehiculo = em.find(Vehicle.class, id);
             vehiculo.setMatricula(matricula);
             vehiculo.setDescripcion(descripcion);
             em.merge(vehiculo);
@@ -66,7 +66,7 @@ public class VehicleBean {
     public boolean eliminarVehiculo(Integer id) {
         boolean ret = false;
         try {
-            VehicleEntity vehiculo = em.find(VehicleEntity.class, id);
+            Vehicle vehiculo = em.find(Vehicle.class, id);
             em.remove(vehiculo);
             ret = true;
         } catch (Exception exe) {
@@ -76,8 +76,8 @@ public class VehicleBean {
         return ret;
     }
 
-    public List<VehicleEntity> listarVehiculos() {
-        List<VehicleEntity> list = new ArrayList();
+    public List<Vehicle> listarVehiculos() {
+        List<Vehicle> list = new ArrayList();
         try {
             list = em
                     .createQuery("select v from VehiculoEntity v")
@@ -89,10 +89,10 @@ public class VehicleBean {
         return list;
     }
 
-    public VehicleEntity buscarVehiculo(Integer id) {
-        VehicleEntity vehiculo = new VehicleEntity();
+    public Vehicle buscarVehiculo(Integer id) {
+        Vehicle vehiculo = new Vehicle();
         try {
-            VehiclePersistence ent = em.find(VehiclePersistence.class, id);
+            VehicleEntity ent = em.find(VehicleEntity.class, id);
 
             vehiculo.setId(ent.getId());
             vehiculo.setMatricula(ent.getMatricula());
@@ -104,12 +104,12 @@ public class VehicleBean {
         return vehiculo;
     }
 
-    public VehiclePersistence asociarCadeteVehiculos(Integer idVehiculo, Integer idCadete) {
-        CadetPersistence cadete = null;
-        VehiclePersistence vehiculo = null;
+    public VehicleEntity asociarCadeteVehiculos(Integer idVehiculo, Integer idCadete) {
+        CadetEntity cadete = null;
+        VehicleEntity vehiculo = null;
         try {
-            cadete = em.find(CadetPersistence.class, idCadete);
-            vehiculo = em.find(VehiclePersistence.class, idVehiculo);
+            cadete = em.find(CadetEntity.class, idCadete);
+            vehiculo = em.find(VehicleEntity.class, idVehiculo);
        //     vehiculo.setCadete(cadete);
             em.persist(vehiculo);
         } catch (Exception exe) {

@@ -35,10 +35,10 @@ public class CadetBean {
         System.out.println("INSTANCIA CADETE BEAN");
     }
     
-    public CadetPersistence agregarCadete(int ci, String nombre, String apellido, String email) {
-        CadetPersistence cadete = null;
+    public CadetEntity agregarCadete(int ci, String nombre, String apellido, String email) {
+        CadetEntity cadete = null;
         try {
-            cadete = new CadetPersistence();
+            cadete = new CadetEntity();
             cadete.setCi(ci);
             cadete.setNombre(nombre);
             cadete.setApellido(apellido);
@@ -52,11 +52,11 @@ public class CadetBean {
         return cadete;
     }
 
-    public CadetPersistence modificarCadete(Integer id, Integer ci, String nombre, String apellido, String email) {
-        CadetPersistence cadete = null;
+    public CadetEntity modificarCadete(Integer id, Integer ci, String nombre, String apellido, String email) {
+        CadetEntity cadete = null;
         boolean estaCi = false;
         try {
-            List<CadetPersistence> list = em
+            List<CadetEntity> list = em
                     .createQuery("select c from CadeteEntity c")
                     .getResultList();
             for (int i = 0; i < list.size(); i++) {
@@ -66,14 +66,14 @@ public class CadetBean {
             }
             for (int i = 0; i < list.size(); i++) {
                 if (list.get(i).getId().equals(id) && estaCi && list.get(i).getCi().equals(ci)) {
-                    cadete = em.find(CadetPersistence.class, id);
+                    cadete = em.find(CadetEntity.class, id);
                     cadete.setNombre(nombre);
                     cadete.setApellido(apellido);
                     cadete.setEmail(email);
                     em.merge(cadete);
                 } else {
                     if (list.get(i).getId().equals(id) && !estaCi) {
-                        cadete = em.find(CadetPersistence.class, id);
+                        cadete = em.find(CadetEntity.class, id);
                         cadete.setCi(ci);
                         cadete.setNombre(nombre);
                         cadete.setApellido(apellido);
@@ -93,7 +93,7 @@ public class CadetBean {
     public boolean eliminarCadete(Integer id) {
         boolean ret = false;
         try {
-            CadetPersistence cadete = em.find(CadetPersistence.class, id);
+            CadetEntity cadete = em.find(CadetEntity.class, id);
             em.remove(cadete);
             ret = true;
         } catch (Exception exe) {
@@ -103,8 +103,8 @@ public class CadetBean {
         return ret;
     }
 
-    public List<CadetPersistence> listarCadetes() {
-        List<CadetPersistence> list = new ArrayList();
+    public List<CadetEntity> listarCadetes() {
+        List<CadetEntity> list = new ArrayList();
         try {
             list = em
                     .createQuery("select c from CadeteEntity c")
@@ -116,10 +116,10 @@ public class CadetBean {
         return list;
     }
 
-    public CadetEntity buscarCadetes(Integer id) {
-        CadetEntity cadete = new CadetEntity();
+    public Cadet buscarCadetes(Integer id) {
+        Cadet cadete = new Cadet();
         try {
-            CadetPersistence ent = em.find(CadetPersistence.class, id);
+            CadetEntity ent = em.find(CadetEntity.class, id);
             cadete.setId(ent.getId());
             cadete.setNombre(ent.getNombre());
             cadete.setApellido(ent.getApellido());
