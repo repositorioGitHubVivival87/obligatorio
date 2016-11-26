@@ -65,7 +65,7 @@ public class ShipmentBean {
         }
     }
     
-    public ShipmentEntity solicitudEnvio(Integer unCadete, Integer unVehiculo, 
+    public ShipmentEntity solicitudEnvio(String usuario, String contrasena, Integer unCadete, Integer unVehiculo, 
             Integer clienteEnvia, Integer clienteRecibe,
             String direccionRetiro, String direccionRecibo, String descripcion) {
         ShipmentEntity env = null;
@@ -92,4 +92,6 @@ public class ShipmentBean {
         }
         return listRetorno;
     }
+
+    
 }
