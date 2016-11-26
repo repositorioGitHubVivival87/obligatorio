@@ -13,6 +13,8 @@ package client;
 public class Client {
 
     private Integer id;
+    private String usuario;
+    private String contrasena;
     private Integer ci;
     private String nombre;
     private String apellido;
@@ -29,6 +31,22 @@ public class Client {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
+
+    public String getContrasena() {
+        return contrasena;
+    }
+
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
     }
 
     public Integer getCi() {
