@@ -49,12 +49,29 @@ public class CadetRest {
     public String obtenerCadetes() {
         return gson.toJson(cadete.listarCadetes());
     }
+    
+    @GET 
+    @Path("/{latitud}/{longitud}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String obtenerCadetesMasCercanos(@QueryParam("latitud") String latitud, 
+            @QueryParam("longitud") String longitud) {
+        //esta lista retorna 4 cadetes
+        return gson.toJson(cadete.listarCadetes());
+    }
 
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public String obtenerUnCadete(@PathParam("id") int id) {
         return gson.toJson(cadete.buscarCadetes(id));
+    }
+    
+    @PUT
+    @Path("/{idCadete}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String actualizarRating(@QueryParam("idCadete") Integer idCadete, @QueryParam("rating") Integer rating) {
+        //hace un promedio entre el que tiene y el que le estan pasando por parametros
+        return "";//gson.toJson(cadete.actualizarRating(idCadete, rating));
     }
 
     @PUT

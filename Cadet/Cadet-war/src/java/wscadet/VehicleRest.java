@@ -80,7 +80,7 @@ public class VehicleRest {
     @PUT
     @Path("/{id}/{cadete}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public String asociarCadeteVehiculos(@PathParam("id") Integer idVehiculo, 
+    public String asociarCadeteVehiculo(@PathParam("id") Integer idVehiculo, 
             @PathParam("cadete") Integer idCadete) {
         return gson.toJson(vehiculo.asociarCadeteVehiculos(idVehiculo, idCadete));
     }
