@@ -9,7 +9,6 @@ package wsreview;
 import com.google.gson.Gson;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -25,7 +24,7 @@ import review.ReviewBean;
  *
  * @author Vivi
  */
-@Path("cliente")
+@Path("revision")
 public class ReviewRest {
     private Gson gson = new Gson();
     @EJB
@@ -55,67 +54,20 @@ public class ReviewRest {
             @QueryParam("status") String status) {
         return gson.toJson(review.modificarReview(id, comment, rating, status));
     }
-    
+       
+    //ESTE METODO HARIA EL ALTA DE REVIEW
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public String altaReview(@QueryParam("idEnvio") Integer idEnvio) {
-        //da de alta una review con ese idEnvio, comentario "", raiting 0, y estado "pending"
-        return gson.toJson("");
-    }
-    
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    public String calificarServicioYCadete(@QueryParam("idEnvio") Integer idEnvio, 
+    public String calificarEnvio(@QueryParam("idEnvio") Integer idEnvio, 
             @QueryParam("idCadete") Integer idCadete,
             @QueryParam("rating") Integer rating, 
             @QueryParam("comment") String comentario,
             @QueryParam("idCliente") Integer idCliente) {
         return gson.toJson("");
     }
-    
+        
     @GET 
-    @Produces(MediaType.APPLICATION_JSON)
-    public String validarCliente(@QueryParam("idCliente") Integer idCliente) {
-        return gson.toJson("");
-    }
-
-    @GET 
-    @Produces(MediaType.APPLICATION_JSON)
-    public String validarReviewNoDuplicado(@QueryParam("idEnvio") Integer idEnvio) {
-        //valida que no haya otra review para ese idEnvio
-        return gson.toJson("");
-    }
-    
-    @GET 
-    @Produces(MediaType.APPLICATION_JSON)
-    public String validarComentario(@QueryParam("comentario") String comentario) {
-        //valida que tenga una cantidad minima de palabras
-        return gson.toJson("");
-    }
-    
-    @GET 
-    @Produces(MediaType.APPLICATION_JSON)
-    public String validarBuenVocabulario(@QueryParam("comentario") String comentario) {
-        //valida que las palabras no esten en una "lista negra de palabras"
-        return gson.toJson("");
-    }
-    
-    @GET 
-    @Produces(MediaType.APPLICATION_JSON)
-    public String calificarSemantica(@QueryParam("comentario") String comentario) {
-        //valida que la semantica del comentario sea correcto
-        return gson.toJson("");
-    }
-    
-    @GET 
-    @Produces(MediaType.APPLICATION_JSON)
-    public String notificarReviewCreada(@QueryParam("idReview") Integer idReview) {
-        //Se envia la review a los distintos destinatarios para disparar otros procesos de negocio. 
-        //Se comunica con el modulo Notification
-        return gson.toJson("");
-    }
-    
-    @GET 
+    @Path("/{idCliente}")
     @Produces(MediaType.APPLICATION_JSON)
     public String listarEnviosPendientesCalificacion(@QueryParam("idCliente") Integer idCliente) {
         //pide a shipment todos los envios de este idCliente
@@ -123,27 +75,27 @@ public class ReviewRest {
         return gson.toJson("");
     }
 
-    @GET 
-    @Produces(MediaType.APPLICATION_JSON)
-    public String listarCalificacionesCadete(@QueryParam("idCadete") Integer idCadete) {
-        //pide a shipment todos los envios de este idCadete
-        //si tiene review para cada shipment lo agrego a la lista a retornar
-        return gson.toJson("");
-    }
+//    @GET 
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public String listarCalificacionesCadete(@QueryParam("idCadete") Integer idCadete) {
+//        //pide a shipment todos los envios de este idCadete
+//        //si tiene review para cada shipment lo agrego a la lista a retornar
+//        return gson.toJson("");
+//    }
     
-    @GET 
-    @Produces(MediaType.APPLICATION_JSON)
-    public String rechazarCalificacionCadete(@QueryParam("idCliente") Integer idCliente) {
-        //llama al metodo anterior: listarCalificacionesCadete
-        // y puede setear el estado de la review en rechazado(rejected)
-        return gson.toJson("");
-    }
+//    @GET 
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public String rechazarCalificacionCadete(@QueryParam("idCliente") Integer idCliente) {
+//        //llama al metodo anterior: listarCalificacionesCadete
+//        // y puede setear el estado de la review en rechazado(rejected)
+//        return gson.toJson("");
+//    }
     
-    @GET 
-    @Produces(MediaType.APPLICATION_JSON)
-    public String calificacionNoAprobada(@QueryParam("idCliente") Integer idCliente) {
-        //pide a shipment todos los envios con  reviews "no aprobado" y lo agrego a la lista a retornar
-        return gson.toJson("");
-    }
+//    @GET 
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public String listarCalificacionNoAprobadas(@QueryParam("idCliente") Integer idCliente) {
+//        //pide a shipment todos los envios con  reviews "no aprobado" y lo agrego a la lista a retornar
+//        return gson.toJson("");
+//    }  
     
 }
