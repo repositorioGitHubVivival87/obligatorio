@@ -43,11 +43,12 @@ public class ShipmentRest {
     public ShipmentRest() {
     }
     
+    //notificar al cadete que envio que debe realizar   
     @PUT 
+    @Path("/{unCadete}/{idEnvio}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public String modificar(@QueryParam("id") Integer id, @QueryParam("ci") Integer ci, 
-            @QueryParam("nombre") String nombre, @QueryParam("apellido") String apellido, 
-            @QueryParam("email") String email, @QueryParam("estado") String estado) {
+    public String notificarEnvio(@PathParam("unCadete")  Integer unCadete, 
+            @PathParam("idEnvio")  Integer idEnvio) {
         return "";
     }
     
@@ -62,8 +63,7 @@ public class ShipmentRest {
             @PathParam("direccionRecibo") String direccionRecibo,
             @PathParam("descripcion") String descripcion) {
         //CON ESTADO PENDIENTE
-        return gson.toJson(envio.solicitudEnvio(unCadete, unVehiculo, clienteEnvia, clienteRecibe,
-                direccionRetiro, direccionRecibo, descripcion));
+        return ""; //gson.toJson(envio.solicitudEnvio(unCadete, unVehiculo, clienteEnvia, clienteRecibe, direccionRetiro, direccionRecibo, descripcion));
     }
 
     @POST
@@ -75,65 +75,34 @@ public class ShipmentRest {
             @PathParam("idEnvio") Integer idEnvio) {
         return "";
     }
-    
+        
     @DELETE
     @Consumes(MediaType.APPLICATION_JSON)
     public String eliminar(@QueryParam("id") int id) {
         return "";
     }
-    
+  
+    //LISTA TODOS LOS ENVIOS REGISTRADOS
     @GET 
     @Produces(MediaType.APPLICATION_JSON)
     public String consulta() {
         return gson.toJson(envio.consulta());
     }
     
-    @GET
+    //LISTA TODOS LOS ENVIOS REGISTRADOS DE UN CADETE
+    @GET 
+    @Path("/{idCadete}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String validarUsuario(@PathParam("idUsuarioEnvia") Integer idUsuarioEnvia,
-            @PathParam("idUsuarioRecibe") Integer idUsuarioRecibe) {
-        return "";
+    public String enviosPorCadete(@PathParam("idCadete") int idCadete) {
+        return "";//gson.toJson(envio.consulta());
     }
     
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public String buscarCadetes(@PathParam("latitud") Integer latitud,
-            @PathParam("logitud") Integer longitud) {
-        return "";
-    }
-
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public String seleccionarCadete(@PathParam("idCadete1") Integer idCadete1,
-            @PathParam("idCadete2") Integer idCadete2,
-            @PathParam("idCadete3") Integer idCadete3,
-            @PathParam("idCadete4") Integer idCadete4) {
-        return "";
-    }
+//    //LISTA TODOS LOS ENVIOS REGISTRADOS DE UN CLIENTE
+//    @GET 
+//    @Path("/{idCliente}")
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public String enviosPorCliente(@PathParam("idCliente") int idCliente) {
+//        return "";//gson.toJson(envio.consulta());
+//    }
     
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public String asignarEnvio(@PathParam("idCadete") Integer idCadete,
-            @PathParam("idEnvio") Integer idEnvio) {
-        return "";
-    }
-    
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public String calcularCostoEnvio(@PathParam("foto") String foto) {
-        return "";
-    }
-    
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public String notificarRecepcionEnvio(@PathParam("idEnvio") Integer idEnvio) {
-        return "";
-    }
-    
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public String listarEnviosPorCliente(@PathParam("idCliente") Integer idCliente) {
-        // lista ordenada por fecha-hora de mayor a menor, para el RF6
-        return "";
-    }
 }
