@@ -97,13 +97,14 @@ public class ClientBean {
         return cli;
     }
 
-    public boolean eliminarCliente(Integer id) {
+    public boolean eliminarCliente(String usuario, String contrasena, Integer id) {
         boolean ret = false;
         try {
-            ClientEntity cli = em.find(ClientEntity.class, id);
-            em.remove(cli);
-            ret = true;
-
+            if (esCliente(usuario, contrasena)) {
+                ClientEntity cli = em.find(ClientEntity.class, id);
+                em.remove(cli);
+                ret = true;
+            }
         } catch (Exception exe) {
             Utils.logWS("EnviosYa", " ***********ELIMINACION*CLIENTE************");
             Utils.logWS("EnviosYa", "Error:" + exe.getMessage());
