@@ -35,7 +35,7 @@ public class VehicleBean {
         System.out.println("INSTANCIA VEHICLE BEAN");
     }
     
-    public Vehicle agregarVehiculo(String matricula, String descripcion) {
+    public Vehicle agregarVehiculo(String usuario, String contrasena, String matricula, String descripcion) {
         Vehicle vehiculo = new Vehicle();
         try {
             vehiculo.setMatricula(matricula);
@@ -48,7 +48,7 @@ public class VehicleBean {
         return vehiculo;
     }
 
-    public Vehicle modificarVehiculo(Integer id, String matricula, String descripcion) {
+    public Vehicle modificarVehiculo(String usuario, String contrasena,Integer id, String matricula, String descripcion) {
         Vehicle vehiculo = null;
         try {
             vehiculo = em.find(Vehicle.class, id);
@@ -63,7 +63,7 @@ public class VehicleBean {
         return vehiculo;
     }
 
-    public boolean eliminarVehiculo(Integer id) {
+    public boolean eliminarVehiculo(String usuario, String contrasena, Integer id) {
         boolean ret = false;
         try {
             Vehicle vehiculo = em.find(Vehicle.class, id);
@@ -76,7 +76,7 @@ public class VehicleBean {
         return ret;
     }
 
-    public List<Vehicle> listarVehiculos() {
+    public List<Vehicle> listarVehiculos(String usuario, String contrasena) {
         List<Vehicle> list = new ArrayList();
         try {
             list = em
@@ -89,7 +89,7 @@ public class VehicleBean {
         return list;
     }
 
-    public Vehicle buscarVehiculo(Integer id) {
+    public Vehicle buscarVehiculo(String usuario, String contrasena, Integer id) {
         Vehicle vehiculo = new Vehicle();
         try {
             VehicleEntity ent = em.find(VehicleEntity.class, id);
@@ -104,7 +104,7 @@ public class VehicleBean {
         return vehiculo;
     }
 
-    public VehicleEntity asociarCadeteVehiculos(Integer idVehiculo, Integer idCadete) {
+    public VehicleEntity asociarCadeteVehiculos(String usuario, String contrasena, Integer idVehiculo, Integer idCadete) {
         CadetEntity cadete = null;
         VehicleEntity vehiculo = null;
         try {
