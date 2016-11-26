@@ -25,7 +25,7 @@ import notification.NotificationBean;
  *
  * @author Vivi
  */
-@Path("notification")
+@Path("notificacion")
 public class NotificationRest {
     private Gson gson = new Gson();
     @EJB
@@ -68,5 +68,13 @@ public class NotificationRest {
     @Consumes(MediaType.APPLICATION_JSON)
     public String eliminar(@QueryParam("id") int id) {
         return gson.toJson(notification.eliminarNotification(id));
+    }
+    
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String enviarNotificacion(@QueryParam("emailEmisor") String emailEmisor, 
+            @QueryParam("emailReceptor") String emailReceptor, 
+            @QueryParam("mensaje") String mensaje) {
+        return gson.toJson(notification.agregarNotification(emailEmisor, emailReceptor, mensaje));
     }
 }
