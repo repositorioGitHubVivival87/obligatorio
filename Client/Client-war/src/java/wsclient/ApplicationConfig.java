@@ -31,6 +31,7 @@ public class ApplicationConfig extends Application {
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(wsclient.ClientRest.class);
+        resources.add(wsclient.PaymentRest.class);
     }
     
 }

@@ -16,7 +16,6 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
@@ -42,33 +41,21 @@ public class ClientRest {
     public ClientRest() {
     }
 
-    
-    @GET 
-    @Produces(MediaType.APPLICATION_JSON)
-    public String obtenerClientes() {
-        return gson.toJson(cliente.listarClientes());
-    }
-
-    @GET
-    @Path("/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String obtenerUnCliente(@PathParam("id") int id) {
-        return gson.toJson(cliente.buscarClientes(id));
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String agregar(@QueryParam("usuario") String usuario, @QueryParam("contrasena") String contrasena,
+            @QueryParam("ci") Integer ci, @QueryParam("nombre") String nombre, 
+            @QueryParam("apellido") String apellido, @QueryParam("email") String email) {
+        return gson.toJson(cliente.agregarCliente(usuario, contrasena, ci, nombre, apellido, email));
     }
     
     @PUT 
     @Consumes(MediaType.APPLICATION_JSON)
-    public String modificar(@QueryParam("id") Integer id, @QueryParam("ci") Integer ci, 
+    public String modificar(@QueryParam("usuario") String usuario, @QueryParam("contrasena") String contrasena,
+            @QueryParam("id") Integer id, @QueryParam("ci") Integer ci, 
             @QueryParam("nombre") String nombre, @QueryParam("apellido") String apellido, 
             @QueryParam("email") String email) {
-        return gson.toJson(cliente.modificarCliente(id, ci, nombre, apellido, email));
-    }
-    
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    public String agregar(@QueryParam("ci") Integer ci, @QueryParam("nombre") String nombre, 
-            @QueryParam("apellido") String apellido, @QueryParam("email") String email) {
-        return gson.toJson(cliente.agregarCliente(ci, nombre, apellido, email));
+        return gson.toJson(cliente.modificarCliente(usuario, contrasena, id, ci, nombre, apellido, email));
     }
 
     @DELETE
@@ -76,4 +63,27 @@ public class ClientRest {
     public String eliminar(@QueryParam("id") int id) {
         return gson.toJson(cliente.eliminarCliente(id));
     }
+
+    //LISTA TODOS LOS CLIENTES DE LA BD
+    @GET 
+    @Produces(MediaType.APPLICATION_JSON)
+    public String obtenerClientes() {
+        return gson.toJson(cliente.listarClientes());
+    }
+
+    //OBTENER UN CLIENTE
+    @GET
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String obtenerUnCliente(@QueryParam("usuario") String usuario, @QueryParam("contrasena") String contrasena) {
+        return gson.toJson(cliente.obtenerUnCliente(usuario, contrasena));
+    }
+    
+    //VALIDAR CLIENTE
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String validarCliente(@QueryParam("usuario") String usuario, @QueryParam("contrasena") String contrasena) {
+        return gson.toJson(cliente.esCliente(usuario, contrasena));
+    } 
+    
 }
