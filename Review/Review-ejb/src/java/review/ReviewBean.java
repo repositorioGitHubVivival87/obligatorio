@@ -95,4 +95,35 @@ public class ReviewBean {
         }
         return review;
     }   
+
+    public String validarCliente(Integer idCliente) {
+        return "";
+    }
+
+    public String validarReviewNoDuplicado(Integer idEnvio) {
+        //valida que no haya otra review para ese idEnvio
+        return "";
+    }
+    
+    public String validarComentario(String comentario) {
+        //valida que tenga una cantidad minima de palabras
+        return "";
+    }
+    
+    public String validarBuenVocabulario(String comentario) {
+        //valida que las palabras no esten en una "lista negra de palabras"
+        return "";
+    }
+    
+    public String calificarSemantica(String comentario) {
+        //valida que la semantica del comentario sea correcto
+        return "";
+    }
+    
+    public String notificarReviewCreada(Integer idReview) {
+        //Se envia la review a los distintos destinatarios para disparar otros procesos de negocio. 
+        //Se comunica con el modulo Notification
+        return "";
+    }
+
 }
