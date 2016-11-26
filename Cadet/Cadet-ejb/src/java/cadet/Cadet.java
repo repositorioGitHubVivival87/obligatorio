@@ -17,7 +17,11 @@ public class Cadet {
     private String nombre;
     private String apellido;
     private String email;
-
+    private String latitud;
+    private String longitud;
+    private String estado;
+    private String rating;
+    
     //CONSTRUCTOR
     public Cadet() {
     }
@@ -62,4 +66,37 @@ public class Cadet {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public String getLatitud() {
+        return latitud;
+    }
+
+    public void setLatitud(String latitud) {
+        this.latitud = latitud;
+    }
+
+    public String getLongitud() {
+        return longitud;
+    }
+
+    public void setLongitud(String longitud) {
+        this.longitud = longitud;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public String getRating() {
+        return rating;
+    }
+
+    public void setRating(String rating) {
+        this.rating = rating;
+    }
+
 }

@@ -34,7 +34,9 @@ public class CadetEntity implements Serializable {
     private String apellido;
     
     private String email;
-  
+    private String estado;
+    private String rating;
+    
     //CONSTRUCTOR
     public CadetEntity() {
     }
@@ -78,6 +80,22 @@ public class CadetEntity implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public String getRating() {
+        return rating;
+    }
+
+    public void setRating(String rating) {
+        this.rating = rating;
     }
     
 }
