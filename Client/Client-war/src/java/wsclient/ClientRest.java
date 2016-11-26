@@ -60,8 +60,10 @@ public class ClientRest {
 
     @DELETE
     @Consumes(MediaType.APPLICATION_JSON)
-    public String eliminar(@QueryParam("id") int id) {
-        return gson.toJson(cliente.eliminarCliente(id));
+    public String eliminar(@QueryParam("usuario") String usuario, 
+            @QueryParam("contrasena") String contrasena, 
+            @QueryParam("id") int id) {
+        return gson.toJson(cliente.eliminarCliente(usuario, contrasena, id));
     }
 
     //LISTA TODOS LOS CLIENTES DE LA BD
@@ -84,6 +86,5 @@ public class ClientRest {
     @Produces(MediaType.APPLICATION_JSON)
     public String validarCliente(@QueryParam("usuario") String usuario, @QueryParam("contrasena") String contrasena) {
         return gson.toJson(cliente.esCliente(usuario, contrasena));
-    } 
-    
+    }     
 }
