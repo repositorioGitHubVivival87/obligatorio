@@ -65,7 +65,7 @@ public class PaymentBean {
         boolean estaNroTarj = false;
         try {
             List<PaymentEntity> list = em
-                    .createQuery("select p from PaymentEntity p where cliente = " + idCliente)
+                    .createQuery("select p.* from PaymentEntity p where cliente_id = " + idCliente)
                     .getResultList();
             for (int i = 0; i < list.size(); i++) {
                 if (list.get(i).getNroTarjeta().equals(nroTarjeta)
@@ -104,8 +104,8 @@ public class PaymentBean {
     public boolean eliminarMedioDePago(Integer id) {
         boolean ret = false;
         try {
-            PaymentEntity cli = em.find(PaymentEntity.class, id);
-            em.remove(cli);
+            PaymentEntity mdp = em.find(PaymentEntity.class, id);
+            em.remove(mdp);
             ret = true;
 
         } catch (Exception exe) {
@@ -119,28 +119,13 @@ public class PaymentBean {
         List<PaymentEntity> list = new ArrayList();
         try {
             list = em
-                    .createQuery("select p from PaymentEntity p where cliente = " + idCliente)
+                    .createQuery("select p.* from PaymentEntity p where cliente_id = " + idCliente)
                     .getResultList();
         } catch (Exception exe) {
-            Utils.logWS("EnviosYa", " ***********LISTAR*CLIENTES*************");
+            Utils.logWS("EnviosYa", " ***********LISTAR*MEDIOS*DE*PAGO*************");
             Utils.logWS("EnviosYa", "Error:" + exe.getMessage());
         }
         return list;
     }
 
-    public Client buscarMedioDePago(Integer id) {
-        Client cli = new Client();
-        try {
-            ClientEntity ent = em.find(ClientEntity.class, id);
-            cli.setId(ent.getId());
-            cli.setNombre(ent.getNombre());
-            cli.setApellido(ent.getApellido());
-            cli.setEmail(ent.getEmail());
-
-        } catch (Exception exe) {
-            Utils.logWS("EnviosYa", " ***********BUSCAR*CLIENTE*POR*ID************");
-            Utils.logWS("EnviosYa", "Error:" + exe.getMessage());
-        }
-        return cli;
-    }
 }

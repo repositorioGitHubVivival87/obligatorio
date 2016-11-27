@@ -116,7 +116,7 @@ public class ClientBean {
         List<ClientEntity> list = new ArrayList();
         try {
             list = em
-                    .createQuery("select c from ClienteEntity c")
+                    .createQuery("select * from ClientEntity c")
                     .getResultList();
         } catch (Exception exe) {
             Utils.logWS("EnviosYa", " ***********LISTAR*CLIENTES*************");
@@ -130,6 +130,7 @@ public class ClientBean {
         try {
             ClientEntity ent = em.find(ClientEntity.class, id);
             cli.setId(ent.getId());
+            cli.setCi(ent.getCi());
             cli.setNombre(ent.getNombre());
             cli.setApellido(ent.getApellido());
             cli.setEmail(ent.getEmail());
@@ -145,7 +146,7 @@ public class ClientBean {
         boolean esCli = false;
         try {
             List<ClientEntity> list = em
-                    .createQuery("select c from ClienteEntity c "
+                    .createQuery("select c.* from ClientEntity c "
                             + "where usuario = '" + usuario + "' and contrasena = '" + contrasena + "'")
                     .getResultList();
 
@@ -164,7 +165,7 @@ public class ClientBean {
         ClientEntity cli = new ClientEntity();
         try {
             List<ClientEntity> list = em
-                    .createQuery("select c from ClienteEntity c "
+                    .createQuery("select c.* from ClientEntity c "
                             + "where usuario = '" + usuario + "' and contrasena = '" + contrasena + "'")
                     .getResultList();
 
