@@ -41,6 +41,31 @@ public class VehicleRest {
     public VehicleRest() {
     }
 
+    //agregar
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String agregar(@QueryParam("usuario") String usuario, @QueryParam("contrasena") String contrasena,
+            @QueryParam("matricula") String matricula, @QueryParam("descripcion") String descripcion) {
+        return gson.toJson(vehiculo.agregarVehiculo(usuario, contrasena, matricula, descripcion));
+    }
+    
+    //modificar
+    @PUT 
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String modificar(@QueryParam("usuario") String usuario, @QueryParam("contrasena") String contrasena,
+            @QueryParam("id") Integer id, @QueryParam("matricula") String matricula, 
+            @QueryParam("descripcion") String descripcion) {
+        return gson.toJson(vehiculo.modificarVehiculo(usuario, contrasena, id, matricula, descripcion));
+    }
+    
+    //eliminar
+    @DELETE
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String eliminar(@QueryParam("usuario") String usuario, @QueryParam("contrasena") String contrasena, 
+            @QueryParam("id") int id) {
+        return gson.toJson(vehiculo.eliminarVehiculo(usuario, contrasena, id));
+    }
+    
     //obtener
     @GET 
     @Produces(MediaType.APPLICATION_JSON)
@@ -56,35 +81,11 @@ public class VehicleRest {
         return gson.toJson(vehiculo.buscarVehiculo(usuario, contrasena, id));
     }
     
-    //modificar
-    @PUT 
-    @Consumes(MediaType.APPLICATION_JSON)
-    public String modificar(@QueryParam("usuario") String usuario, @QueryParam("contrasena") String contrasena,
-            @QueryParam("id") Integer id, @QueryParam("matricula") String matricula, 
-            @QueryParam("descripcion") String descripcion) {
-        return gson.toJson(vehiculo.modificarVehiculo(usuario, contrasena, id, matricula, descripcion));
-    }
-     
-    //agregar
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    public String agregar(@QueryParam("usuario") String usuario, @QueryParam("contrasena") String contrasena,
-            @QueryParam("matricula") String matricula, @QueryParam("descripcion") String descripcion) {
-        return gson.toJson(vehiculo.agregarVehiculo(usuario, contrasena, matricula, descripcion));
-    }
-
-    //eliminar
-    @DELETE
-    @Consumes(MediaType.APPLICATION_JSON)
-    public String eliminar(@QueryParam("usuario") String usuario, @QueryParam("contrasena") String contrasena, 
-            @QueryParam("id") int id) {
-        return gson.toJson(vehiculo.eliminarVehiculo(usuario, contrasena, id));
-    }
-    
     @PUT
     @Path("/{id}/{cadete}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public String asociarCadeteVehiculo(@QueryParam("usuario") String usuario, @QueryParam("contrasena") String contrasena,
+    public String asociarCadeteVehiculo(@QueryParam("usuario") String usuario, 
+            @QueryParam("contrasena") String contrasena,
             @PathParam("id") Integer idVehiculo, @PathParam("cadete") Integer idCadete) {
         return gson.toJson(vehiculo.asociarCadeteVehiculos(usuario, contrasena, idVehiculo, idCadete));
     }

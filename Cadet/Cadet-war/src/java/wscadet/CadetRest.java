@@ -38,11 +38,35 @@ public class CadetRest {
     private UriInfo context;
 
     /**
-     * Creates a new instance of CadeteRest
+     * Creates a new instance of CadetRest
      */
     public CadetRest() {
     }
 
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String agregar(@QueryParam("usuario") String usuario, @QueryParam("contrasena") String contrasena,
+            @QueryParam("ci") Integer ci, @QueryParam("nombre") String nombre,
+            @QueryParam("apellido") String apellido, @QueryParam("email") String email) {
+        return gson.toJson(cadete.agregarCadete(usuario, contrasena, ci, nombre, apellido, email));
+    }
+    
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String modificar(@QueryParam("usuario") String usuario, @QueryParam("contrasena") String contrasena,
+            @QueryParam("id") Integer id, @QueryParam("ci") Integer ci,
+            @QueryParam("nombre") String nombre, @QueryParam("apellido") String apellido,
+            @QueryParam("email") String email) {
+        return gson.toJson(cadete.modificarCadete(usuario, contrasena, id, ci, nombre, apellido, email));
+    }   
+
+    @DELETE
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String eliminar(@QueryParam("usuario") String usuario, @QueryParam("contrasena") String contrasena, 
+            @QueryParam("id") int id) {
+        return gson.toJson(cadete.eliminarCadete(usuario, contrasena, id));
+    }
+    
     //obtener
     @GET 
     @Produces(MediaType.APPLICATION_JSON)
@@ -56,44 +80,22 @@ public class CadetRest {
     public String obtenerCadetesMasCercanos(@QueryParam("latitud") String latitud, 
             @QueryParam("longitud") String longitud) {
         //esta lista retorna 4 cadetes
-        return "";
-        //gson.toJson(cadete.listarCadetes());
+        return gson.toJson(cadete.listarCadetesMasCercanos(latitud, longitud));
     }
 
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public String obtenerUnCadete(@PathParam("id") int id) {
-        return gson.toJson(cadete.buscarCadetes(id));
+        return gson.toJson(cadete.buscarUnCadete(id));
     }
     
     @PUT
     @Path("/{idCadete}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public String actualizarRating(@QueryParam("idCadete") Integer idCadete, @QueryParam("rating") Integer rating) {
+    public String actualizarRating(@QueryParam("usuario") String usuario, @QueryParam("contrasena") String contrasena,
+            @QueryParam("idCadete") Integer idCadete, @QueryParam("rating") Integer rating) {
         //hace un promedio entre el que tiene y el que le estan pasando por parametros
-        return "";
-        //gson.toJson(cadete.actualizarRating(idCadete, rating));
-    }
-
-    @PUT
-    @Consumes(MediaType.APPLICATION_JSON)
-    public String modificar(@QueryParam("id") Integer id, @QueryParam("ci") Integer ci,
-            @QueryParam("nombre") String nombre, @QueryParam("apellido") String apellido,
-            @QueryParam("email") String email) {
-        return gson.toJson(cadete.modificarCadete(id, ci, nombre, apellido, email));
-    }
-
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    public String agregar(@QueryParam("ci") Integer ci, @QueryParam("nombre") String nombre,
-            @QueryParam("apellido") String apellido, @QueryParam("email") String email) {
-        return gson.toJson(cadete.agregarCadete(ci, nombre, apellido, email));
-    }
-
-    @DELETE
-    @Consumes(MediaType.APPLICATION_JSON)
-    public String eliminar(@QueryParam("id") int id) {
-        return gson.toJson(cadete.eliminarCadete(id));
+        return gson.toJson(cadete.actualizarRating(usuario, contrasena, idCadete, rating));
     }
 }
