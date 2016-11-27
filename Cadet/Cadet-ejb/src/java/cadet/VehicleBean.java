@@ -48,7 +48,8 @@ public class VehicleBean {
         return vehiculo;
     }
 
-    public Vehicle modificarVehiculo(String usuario, String contrasena,Integer id, String matricula, String descripcion) {
+    public Vehicle modificarVehiculo(String usuario, String contrasena, 
+            Integer id, String matricula, String descripcion) {
         Vehicle vehiculo = null;
         try {
             vehiculo = em.find(Vehicle.class, id);
@@ -80,7 +81,7 @@ public class VehicleBean {
         List<Vehicle> list = new ArrayList();
         try {
             list = em
-                    .createQuery("select v from VehiculoEntity v")
+                    .createQuery("select v.* from VehicleEntity v")
                     .getResultList();
         } catch (Exception exe) {
             Utils.logWS("EnviosYa", " ***********LISTAR*VEHICULOS************");
@@ -104,13 +105,13 @@ public class VehicleBean {
         return vehiculo;
     }
 
-    public VehicleEntity asociarCadeteVehiculos(String usuario, String contrasena, Integer idVehiculo, Integer idCadete) {
-        CadetEntity cadete = null;
+    public VehicleEntity asociarCadeteVehiculos(String usuario, String contrasena, 
+            Integer idVehiculo, Integer idCadete) {
         VehicleEntity vehiculo = null;
         try {
-            cadete = em.find(CadetEntity.class, idCadete);
+            CadetEntity cadete = em.find(CadetEntity.class, idCadete);
             vehiculo = em.find(VehicleEntity.class, idVehiculo);
-       //     vehiculo.setCadete(cadete);
+            vehiculo.setCadete(cadete);
             em.persist(vehiculo);
         } catch (Exception exe) {
             Utils.logWS("EnviosYa", " ***********ASOCIAR*CADETE*CON*VEHICULOS************");
