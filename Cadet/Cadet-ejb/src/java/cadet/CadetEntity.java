@@ -33,8 +33,13 @@ public class CadetEntity implements Serializable {
     @Column(length = 300)
     private String apellido;
     
+    @Column(length = 100)
     private String email;
+    
+    @Column(length = 10)
     private String estado;
+    
+    @Column(length = 10)
     private String rating;
     
     //CONSTRUCTOR

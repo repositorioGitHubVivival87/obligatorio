@@ -43,6 +43,8 @@ public class CadetBean {
             cadete.setNombre(nombre);
             cadete.setApellido(apellido);
             cadete.setEmail(email);
+            cadete.setEstado("I");
+            cadete.setRating("0");
             em.persist(cadete);
 
         } catch (Exception exe) {
