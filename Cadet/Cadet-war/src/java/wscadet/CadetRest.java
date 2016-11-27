@@ -19,9 +19,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-//import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-//import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.UriInfo;
 
 /**
  *
@@ -34,8 +34,8 @@ public class CadetRest {
     @EJB
     private CadetBean cadete;
 
-//    @Context
-//    private UriInfo context;
+    @Context
+    private UriInfo context;
 
     /**
      * Creates a new instance of CadeteRest
@@ -56,7 +56,8 @@ public class CadetRest {
     public String obtenerCadetesMasCercanos(@QueryParam("latitud") String latitud, 
             @QueryParam("longitud") String longitud) {
         //esta lista retorna 4 cadetes
-        return gson.toJson(cadete.listarCadetes());
+        return "";
+        //gson.toJson(cadete.listarCadetes());
     }
 
     @GET
@@ -71,7 +72,8 @@ public class CadetRest {
     @Consumes(MediaType.APPLICATION_JSON)
     public String actualizarRating(@QueryParam("idCadete") Integer idCadete, @QueryParam("rating") Integer rating) {
         //hace un promedio entre el que tiene y el que le estan pasando por parametros
-        return "";//gson.toJson(cadete.actualizarRating(idCadete, rating));
+        return "";
+        //gson.toJson(cadete.actualizarRating(idCadete, rating));
     }
 
     @PUT
