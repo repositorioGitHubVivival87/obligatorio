@@ -69,7 +69,7 @@ public class ClientRest {
     //LISTA TODOS LOS CLIENTES DE LA BD
     @GET 
     @Produces(MediaType.APPLICATION_JSON)
-    public String obtenerClientes() {
+    public String obtenerClientes(@QueryParam("usuario") String usuario, @QueryParam("contrasena") String contrasena) {
         return gson.toJson(cliente.listarClientes());
     }
 
@@ -83,6 +83,7 @@ public class ClientRest {
     
     //VALIDAR CLIENTE
     @GET
+    @Path("/{usuario}/{contrasena}")
     @Produces(MediaType.APPLICATION_JSON)
     public String validarCliente(@QueryParam("usuario") String usuario, @QueryParam("contrasena") String contrasena) {
         return gson.toJson(cliente.esCliente(usuario, contrasena));

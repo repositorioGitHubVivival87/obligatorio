@@ -53,7 +53,7 @@ public class PaymentRest {
     
     @PUT 
     @Consumes(MediaType.APPLICATION_JSON)
-    public String modificar(@QueryParam("id") Integer id, @QueryParam("ci") Integer ci, 
+    public String modificar(@QueryParam("id") Integer id, 
            @QueryParam("idCliente") Integer idCliente, 
             @QueryParam("sello") String sello,
             @QueryParam("nombreembosado") String nombreembosado, 
