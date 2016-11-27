@@ -38,10 +38,7 @@ public class NotificationBean {
     public NotficationEntity agregarNotification(String emailEmisor, String emailReceptor, String mensaje) {
         NotficationEntity not = null;
         try {
-            
-
             em.persist(not);
-
         } catch (Exception exe) {
             Utils.logWS("EnviosYa", " ***********ALTA*NOTIFICATION************");
             Utils.logWS("EnviosYa", "Error:" + exe.getMessage());
@@ -75,19 +72,6 @@ public class NotificationBean {
         return ret;
     }
 
-    public List<NotficationEntity> listarNotifications() {
-        List<NotficationEntity> list = new ArrayList();
-        try {
-            list = em
-                    .createQuery("select c from NotificationPersistence c")
-                    .getResultList();
-        } catch (Exception exe) {
-            Utils.logWS("EnviosYa", " ***********LISTAR*NOTIFICATION*************");
-            Utils.logWS("EnviosYa", "Error:" + exe.getMessage());
-        }
-        return list;
-    }
-
     public NotficationEntity buscarNotificarion(Integer id) {
         NotficationEntity not = new NotficationEntity();
         try {
@@ -99,5 +83,53 @@ public class NotificationBean {
         return not;
     }
 
+    public List<NotficationEntity> listarNotifications() {
+        List<NotficationEntity> list = new ArrayList();
+        try {
+            list = em
+                    .createQuery("select c.* from NotificationPersistence c")
+                    .getResultList();
+        } catch (Exception exe) {
+            Utils.logWS("EnviosYa", " ***********LISTAR*NOTIFICATION*************");
+            Utils.logWS("EnviosYa", "Error:" + exe.getMessage());
+        }
+        return list;
+    }
+
+    public NotficationEntity notificarEnvioCadete(Integer idEnvio, Integer idCadete, String direccionEnvia, 
+                String direccionRecibe, Integer clienteEnvia, Integer clienteRecibe, Double costoEnvio) {
+        NotficationEntity not = null;
+        try {
+            em.persist(not);
+        } catch (Exception exe) {
+            Utils.logWS("EnviosYa", " ***********Notificar*Envio*Cadete************");
+            Utils.logWS("EnviosYa", "Error:" + exe.getMessage());
+        }
+        return not;
+    }
+    
+    public NotficationEntity notificarRecepcionEnvio(Integer idEnvio, String emailEnvia, String emailRecibe, 
+            String nombreCadete, Integer fechaRecibido, Integer horaRecibido, Double costoEnvio) {
+        NotficationEntity not = null;
+        try {
+            em.persist(not);
+        } catch (Exception exe) {
+            Utils.logWS("EnviosYa", " ***********Notificar*Recepcion*Envio************");
+            Utils.logWS("EnviosYa", "Error:" + exe.getMessage());
+        }
+        return not;
+    }
+    
+    public NotficationEntity notificarRecepcionEnvio(Integer idReview, Integer idEnvio, 
+            Integer calificacion, String mensaje) {
+        NotficationEntity not = null;
+        try {
+            em.persist(not);
+        } catch (Exception exe) {
+            Utils.logWS("EnviosYa", " ***********Notificar*Recepcion*Envio************");
+            Utils.logWS("EnviosYa", "Error:" + exe.getMessage());
+        }
+        return not;
+    }
 }
 
