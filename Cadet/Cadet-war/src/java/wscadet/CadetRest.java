@@ -94,7 +94,7 @@ public class CadetRest {
     @Path("/{idCadete}")
     @Consumes(MediaType.APPLICATION_JSON)
     public String actualizarRating(@QueryParam("usuario") String usuario, @QueryParam("contrasena") String contrasena,
-            @QueryParam("idCadete") Integer idCadete, @QueryParam("rating") Integer rating) {
+            @PathParam("idCadete") Integer idCadete, @QueryParam("rating") Integer rating) {
         //hace un promedio entre el que tiene y el que le estan pasando por parametros
         return gson.toJson(cadete.actualizarRating(usuario, contrasena, idCadete, rating));
     }
