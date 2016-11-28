@@ -3,12 +3,14 @@
  * and open the template in the editor.
  */
 
-package herramientas;
+package tools;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -21,7 +23,7 @@ import java.util.Locale;
  */
 public class Utils {
 
-    public static void logWS(String moduleName, String mensaje) {
+    public static void logWs(String moduleName, String mensaje) {
         try {
             DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
             DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
@@ -173,5 +175,31 @@ public class Utils {
             return false;
         }
         return true;
+    }
+
+    public static String getStringMessageDigest(String message) {
+        byte[] digest = null;
+        byte[] buffer = message.getBytes();
+        try {
+            MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
+            messageDigest.reset();
+            messageDigest.update(buffer);
+            digest = messageDigest.digest();
+        } catch (NoSuchAlgorithmException ex) {
+            System.out.println("Error creando Digest");
+        }
+        return toHexadecimal(digest);
+    }
+    
+    private static String toHexadecimal(byte[] digest) {
+        String hash = "";
+        for (byte aux : digest) {
+            int bb = aux & 0xff;
+            if (Integer.toHexString(bb).length() == 1) {
+                hash += "0";
+            }
+            hash += Integer.toHexString(bb);
+        }
+        return hash;
     }
 }

@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package cadet;
 
-import herramientas.Utils;
+import tools.Utils;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -13,7 +14,6 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 
 /**
  *
@@ -51,8 +51,8 @@ public class CadetBean {
                 em.persist(cadete);
             }
         } catch (Exception exe) {
-            Utils.logWS("EnviosYa", " ***********ALTA*CADETE************");
-            Utils.logWS("EnviosYa", "Error:" + exe.getMessage());
+            Utils.logWs("EnviosYa", " ***********ALTA*CADETE************");
+            Utils.logWs("EnviosYa", "Error:" + exe.getMessage());
         }
         return cadete;
     }
@@ -91,8 +91,8 @@ public class CadetBean {
                 }
             }
         } catch (Exception exe) {
-            Utils.logWS("EnviosYa", " ***********MODIFICACION*CADETE************");
-            Utils.logWS("EnviosYa", "Error:" + exe.getMessage());
+            Utils.logWs("EnviosYa", " ***********MODIFICACION*CADETE************");
+            Utils.logWs("EnviosYa", "Error:" + exe.getMessage());
         }
         return cadete;
     }
@@ -106,8 +106,8 @@ public class CadetBean {
                 ret = true;
             }
         } catch (Exception exe) {
-            Utils.logWS("EnviosYa", " ***********ELIMINACION*CADETE************");
-            Utils.logWS("EnviosYa", "Error:" + exe.getMessage());
+            Utils.logWs("EnviosYa", " ***********ELIMINACION*CADETE************");
+            Utils.logWs("EnviosYa", "Error:" + exe.getMessage());
         }
         return ret;
     }
@@ -115,13 +115,13 @@ public class CadetBean {
     public List<CadetEntity> listarCadetes() {
         List<CadetEntity> list = new ArrayList();
         try {
-            String consulta = "select * from CadetEntity c";
-            Query que = em.createQuery(consulta);
-            list = que.getResultList();
+            list = em
+                    .createNativeQuery("SELECT * FROM CadetEntity c")
+                    .getResultList();
 
         } catch (Exception exe) {
-            Utils.logWS("EnviosYa", " ***********LISTAR*CADETES************");
-            Utils.logWS("EnviosYa", "Error:" + exe.getMessage());
+            Utils.logWs("EnviosYa", " ***********LISTAR*CADETES************");
+            Utils.logWs("EnviosYa", "Error:" + exe.getMessage());
         }
         return list;
     }
@@ -134,8 +134,8 @@ public class CadetBean {
                     .getResultList();
             //FALTA IMPLEMENTAR
         } catch (Exception exe) {
-            Utils.logWS("EnviosYa", " ***********LISTAR*CADETES************");
-            Utils.logWS("EnviosYa", "Error:" + exe.getMessage());
+            Utils.logWs("EnviosYa", " ***********LISTAR*CADETES************");
+            Utils.logWs("EnviosYa", "Error:" + exe.getMessage());
         }
         return list;
     }
@@ -150,8 +150,8 @@ public class CadetBean {
             cadete.setCi(ent.getCi());
             cadete.setEmail(ent.getEmail());
         } catch (Exception exe) {
-            Utils.logWS("EnviosYa", " ***********BUSCAR*CADETE*POR*ID************");
-            Utils.logWS("EnviosYa", "Error:" + exe.getMessage());
+            Utils.logWs("EnviosYa", " ***********BUSCAR*CADETE*POR*ID************");
+            Utils.logWs("EnviosYa", "Error:" + exe.getMessage());
         }
         return cadete;
     }
@@ -174,8 +174,8 @@ public class CadetBean {
                 }
             }
         } catch (Exception exe) {
-            Utils.logWS("EnviosYa", " ***********ACTUALIZAR*RATING************");
-            Utils.logWS("EnviosYa", "Error:" + exe.getMessage());
+            Utils.logWs("EnviosYa", " ***********ACTUALIZAR*RATING************");
+            Utils.logWs("EnviosYa", "Error:" + exe.getMessage());
         }
         return cadete;
     }
@@ -193,8 +193,8 @@ public class CadetBean {
             }
 
         } catch (Exception exe) {
-            Utils.logWS("EnviosYa", " ***********ES*CADETE*************");
-            Utils.logWS("EnviosYa", "Error:" + exe.getMessage());
+            Utils.logWs("EnviosYa", " ***********ES*CADETE*************");
+            Utils.logWs("EnviosYa", "Error:" + exe.getMessage());
         }
         return esCad;
     }

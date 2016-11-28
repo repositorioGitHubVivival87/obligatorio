@@ -6,7 +6,7 @@
 
 package cadet;
 
-import herramientas.Utils;
+import tools.Utils;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -42,8 +42,8 @@ public class VehicleBean {
             vehiculo.setDescripcion(descripcion);
             em.persist(vehiculo);
         } catch (Exception exe) {
-            Utils.logWS("EnviosYa", " ***********ALTA*VEHICULO************");
-            Utils.logWS("EnviosYa", "Error:" + exe.getMessage());
+            Utils.logWs("EnviosYa", " ***********ALTA*VEHICULO************");
+            Utils.logWs("EnviosYa", "Error:" + exe.getMessage());
         }
         return vehiculo;
     }
@@ -58,8 +58,8 @@ public class VehicleBean {
             em.merge(vehiculo);
 
         } catch (Exception exe) {
-            Utils.logWS("EnviosYa", " ***********MODIFICACION*VEHICULO************");
-            Utils.logWS("EnviosYa", "Error:" + exe.getMessage());
+            Utils.logWs("EnviosYa", " ***********MODIFICACION*VEHICULO************");
+            Utils.logWs("EnviosYa", "Error:" + exe.getMessage());
         }
         return vehiculo;
     }
@@ -71,8 +71,8 @@ public class VehicleBean {
             em.remove(vehiculo);
             ret = true;
         } catch (Exception exe) {
-            Utils.logWS("EnviosYa", " ***********ELIMINACION*VEHICULO************");
-            Utils.logWS("EnviosYa", "Error:" + exe.getMessage());
+            Utils.logWs("EnviosYa", " ***********ELIMINACION*VEHICULO************");
+            Utils.logWs("EnviosYa", "Error:" + exe.getMessage());
         }
         return ret;
     }
@@ -84,8 +84,8 @@ public class VehicleBean {
                     .createQuery("select v.* from VehicleEntity v")
                     .getResultList();
         } catch (Exception exe) {
-            Utils.logWS("EnviosYa", " ***********LISTAR*VEHICULOS************");
-            Utils.logWS("EnviosYa", "Error:" + exe.getMessage());
+            Utils.logWs("EnviosYa", " ***********LISTAR*VEHICULOS************");
+            Utils.logWs("EnviosYa", "Error:" + exe.getMessage());
         }
         return list;
     }
@@ -99,8 +99,8 @@ public class VehicleBean {
             vehiculo.setMatricula(ent.getMatricula());
             vehiculo.setDescripcion(ent.getDescripcion());
         } catch (Exception exe) {
-            Utils.logWS("EnviosYa", " ***********BUSCAR*VEHICULO*POR*ID************");
-            Utils.logWS("EnviosYa", "Error:" + exe.getMessage());
+            Utils.logWs("EnviosYa", " ***********BUSCAR*VEHICULO*POR*ID************");
+            Utils.logWs("EnviosYa", "Error:" + exe.getMessage());
         }
         return vehiculo;
     }
@@ -114,8 +114,8 @@ public class VehicleBean {
             vehiculo.setCadete(cadete);
             em.persist(vehiculo);
         } catch (Exception exe) {
-            Utils.logWS("EnviosYa", " ***********ASOCIAR*CADETE*CON*VEHICULOS************");
-            Utils.logWS("EnviosYa", "Error:" + exe.getMessage());
+            Utils.logWs("EnviosYa", " ***********ASOCIAR*CADETE*CON*VEHICULOS************");
+            Utils.logWs("EnviosYa", "Error:" + exe.getMessage());
         }
         return vehiculo;
     }
