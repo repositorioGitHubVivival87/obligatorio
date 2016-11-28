@@ -81,7 +81,7 @@ public class VehicleBean {
         List<Vehicle> list = new ArrayList();
         try {
             list = em
-                    .createQuery("select v.* from VehicleEntity v")
+                    .createNativeQuery("select v.* from VehicleEntity v")
                     .getResultList();
         } catch (Exception exe) {
             Utils.logWs("EnviosYa", " ***********LISTAR*VEHICULOS************");

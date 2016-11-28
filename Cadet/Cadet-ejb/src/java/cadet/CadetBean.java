@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package cadet;
 
 import tools.Utils;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 import javax.annotation.PostConstruct;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -40,16 +40,16 @@ public class CadetBean {
             String nombre, String apellido, String email) {
         CadetEntity cadete = null;
         try {
-            if (!esCadete(usuario, contrasena)) {
-                cadete = new CadetEntity();
-                cadete.setCi(ci);
-                cadete.setNombre(nombre);
-                cadete.setApellido(apellido);
-                cadete.setEmail(email);
-                cadete.setEstado("I");
-                cadete.setRating("0");
-                em.persist(cadete);
-            }
+            //if (!esCadete(usuario, contrasena)) {
+            cadete = new CadetEntity();
+            cadete.setCi(ci);
+            cadete.setNombre(nombre);
+            cadete.setApellido(apellido);
+            cadete.setEmail(email);
+            cadete.setEstado("I");
+            cadete.setRating("0");
+            em.persist(cadete);
+            //}
         } catch (Exception exe) {
             Utils.logWs("EnviosYa", " ***********ALTA*CADETE************");
             Utils.logWs("EnviosYa", "Error:" + exe.getMessage());
@@ -60,36 +60,15 @@ public class CadetBean {
     public CadetEntity modificarCadete(String usuario, String contrasena, Integer id, Integer ci,
             String nombre, String apellido, String email) {
         CadetEntity cadete = null;
-        boolean estaCi = false;
         try {
-            if (esCadete(usuario, contrasena)) {
-                List<CadetEntity> list = em
-                        .createQuery("select * from CadetEntity c")
-                        .getResultList();
-                for (int i = 0; i < list.size(); i++) {
-                    if (list.get(i).getCi().equals(ci)) {
-                        estaCi = true;
-                    }
-                }
-                for (int i = 0; i < list.size(); i++) {
-                    if (list.get(i).getId().equals(id) && estaCi && list.get(i).getCi().equals(ci)) {
-                        cadete = em.find(CadetEntity.class, id);
-                        cadete.setNombre(nombre);
-                        cadete.setApellido(apellido);
-                        cadete.setEmail(email);
-                        em.merge(cadete);
-                    } else {
-                        if (list.get(i).getId().equals(id) && !estaCi) {
-                            cadete = em.find(CadetEntity.class, id);
-                            cadete.setCi(ci);
-                            cadete.setNombre(nombre);
-                            cadete.setApellido(apellido);
-                            cadete.setEmail(email);
-                            em.merge(cadete);
-                        }
-                    }
-                }
-            }
+            //if (esCadete(usuario, contrasena)) {
+            cadete = em.find(CadetEntity.class, id);
+            cadete.setCi(ci);
+            cadete.setNombre(nombre);
+            cadete.setApellido(apellido);
+            cadete.setEmail(email);
+            em.merge(cadete);
+            //}
         } catch (Exception exe) {
             Utils.logWs("EnviosYa", " ***********MODIFICACION*CADETE************");
             Utils.logWs("EnviosYa", "Error:" + exe.getMessage());
@@ -99,12 +78,13 @@ public class CadetBean {
 
     public boolean eliminarCadete(String usuario, String contrasena, Integer id) {
         boolean ret = false;
+
         try {
-            if (esCadete(usuario, contrasena)) {
-                CadetEntity cadete = em.find(CadetEntity.class, id);
-                em.remove(cadete);
-                ret = true;
-            }
+            //if (esCadete(usuario, contrasena)) {
+            CadetEntity cadete = em.find(CadetEntity.class, id);
+            em.remove(cadete);
+            ret = true;
+    //}
         } catch (Exception exe) {
             Utils.logWs("EnviosYa", " ***********ELIMINACION*CADETE************");
             Utils.logWs("EnviosYa", "Error:" + exe.getMessage());
@@ -130,18 +110,44 @@ public class CadetBean {
         List<CadetEntity> list = new ArrayList();
         try {
             List<CadetEntity> todos = em
-                    .createQuery("select * from CadetEntity c")
+                    .createNativeQuery("select * from CadetEntity c")
                     .getResultList();
-            //FALTA IMPLEMENTAR
+            double total = Double.MAX_VALUE;
+            Integer cadetes = 0;
+            double latOrigen = Double.valueOf(latitud);
+            double longOrigen = Double.valueOf(longitud);
+            while (cadetes < 4) {
+                for (int i = 0; i < todos.size(); i++) {
+                    double latCadete = -34;//obtenerLatCadete(todos.get(i));
+                    double longCadete = 38;//obtenerLongCadete(todos.get(i));
+                    double lat = latOrigen - latCadete;
+                    double longi = longOrigen - longCadete;
+                    double suma = Math.abs(lat + longi);
+                    if (suma < total) {
+                        total = suma;
+                    }
+                    todos.remove(todos.get(i));
+                } 
+                cadetes++;
+            }
         } catch (Exception exe) {
-            Utils.logWs("EnviosYa", " ***********LISTAR*CADETES************");
+            Utils.logWs("EnviosYa", " ***********LISTAR*4*CADETES*MAS*CERCANOS************");
             Utils.logWs("EnviosYa", "Error:" + exe.getMessage());
         }
         return list;
     }
+    
+    public double obtenerLatCadete(CadetEntity cadet) {
+        return 34;
+    }
 
+    public double obtenerLongCadete(CadetEntity cadet) {
+        return 38;
+    }
+    
     public Cadet buscarUnCadete(Integer id) {
         Cadet cadete = new Cadet();
+
         try {
             CadetEntity ent = em.find(CadetEntity.class, id);
             cadete.setId(ent.getId());
@@ -158,21 +164,21 @@ public class CadetBean {
 
     public CadetEntity actualizarRating(String usuario, String contrasena, Integer id, Integer raiting) {
         CadetEntity cadete = null;
+
         try {
-            if (esCadete(usuario, contrasena)) {
-                List<CadetEntity> list = em
-                        .createQuery("select c.* from CadetEntity c where id = " + id)
-                        .getResultList();
-                for (int i = 0; i < list.size(); i++) {
-                    CadetEntity cad = list.get(i);
-                    Integer raitingBd = Integer.valueOf(cad.getRating());
-                    Integer promedio = (raiting + raitingBd) / 2;
-                    String prom = String.valueOf(promedio);
-                    cadete = em.find(CadetEntity.class, id);
-                    cadete.setRating(prom);
-                    em.merge(cadete);
-                }
-            }
+            //if (esCadete(usuario, contrasena)) {
+            CadetEntity ent = em.find(CadetEntity.class, id);
+            Integer raitingBd = Integer.valueOf(ent.getRating());
+            Integer promedio = (raiting + raitingBd) / 2;
+            String prom = String.valueOf(promedio);
+
+            cadete = em.find(CadetEntity.class, id);
+
+            cadete.setRating(prom);
+
+            em.merge(cadete);
+
+    //}
         } catch (Exception exe) {
             Utils.logWs("EnviosYa", " ***********ACTUALIZAR*RATING************");
             Utils.logWs("EnviosYa", "Error:" + exe.getMessage());
@@ -184,7 +190,7 @@ public class CadetBean {
         boolean esCad = false;
         try {
             List<CadetEntity> list = em
-                    .createQuery("select c.* from CadetEntity c "
+                    .createNativeQuery("select c.* from CadetEntity c "
                             + "where usuario = '" + usuario + "' and contrasena = '" + contrasena + "'")
                     .getResultList();
 
