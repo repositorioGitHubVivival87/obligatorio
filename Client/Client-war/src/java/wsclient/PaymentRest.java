@@ -73,7 +73,7 @@ public class PaymentRest {
     //LISTA TODOS LOS MEDIOS DE PAGO DE UN CLIENTE
     @GET 
     @Produces(MediaType.APPLICATION_JSON)
-    public String obtenerListarMediosDePago(@QueryParam("idCliente") Integer idCliente) {
+    public String obtenerListarMediosDePago(@QueryParam("Cliente_ID") Integer idCliente) {
         return gson.toJson(mdp.listarMediosDePagoPorCliente(idCliente));
     }
 

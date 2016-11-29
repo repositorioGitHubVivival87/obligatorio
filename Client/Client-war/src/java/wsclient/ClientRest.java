@@ -40,13 +40,14 @@ public class ClientRest {
      */
     public ClientRest() {
     }
-
+   
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public String agregar(@QueryParam("usuario") String usuario, @QueryParam("contrasena") String contrasena,
             @QueryParam("ci") Integer ci, @QueryParam("nombre") String nombre, 
-            @QueryParam("apellido") String apellido, @QueryParam("email") String email) {
-        return gson.toJson(cliente.agregarCliente(usuario, contrasena, ci, nombre, apellido, email));
+            @QueryParam("apellido") String apellido, @QueryParam("email") String email,
+            @QueryParam("nivel") Integer nivel) {
+        return gson.toJson(cliente.agregarCliente(usuario, contrasena, ci, nombre, apellido, email, nivel));
     }
     
     @PUT 
@@ -54,8 +55,8 @@ public class ClientRest {
     public String modificar(@QueryParam("usuario") String usuario, @QueryParam("contrasena") String contrasena,
             @QueryParam("id") Integer id, @QueryParam("ci") Integer ci, 
             @QueryParam("nombre") String nombre, @QueryParam("apellido") String apellido, 
-            @QueryParam("email") String email) {
-        return gson.toJson(cliente.modificarCliente(usuario, contrasena, id, ci, nombre, apellido, email));
+            @QueryParam("email") String email, @QueryParam("nivel") Integer nivel) {
+        return gson.toJson(cliente.modificarCliente(usuario, contrasena, id, ci, nombre, apellido, email, nivel));
     }
 
     @DELETE
