@@ -6,7 +6,7 @@
 
 package client;
 
-import herramientas.Utils;
+import tools.Utils;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -40,10 +40,9 @@ public class PaymentBean {
             Integer fechavencimiento, Integer cvv, Integer nroTarjeta) {
         PaymentEntity medio = null;
         try {
-            ClientEntity cliente = em.find(ClientEntity.class, idCliente);
+            //ClientEntity cliente = em.find(ClientEntity.class, idCliente);
             
             medio = new PaymentEntity();
-            medio.setCliente(cliente);
             medio.setSello(sello);
             medio.setNombreembosado(nombreembosado);
             medio.setFechavencimiento(fechavencimiento);
@@ -53,8 +52,8 @@ public class PaymentBean {
             em.persist(medio);
             
         } catch (Exception exe) {
-            Utils.logWS("EnviosYa", " ***********ALTA*MEDIO*DE*PAGO************");
-            Utils.logWS("EnviosYa", "Error:" + exe.getMessage());
+            Utils.logWs("EnviosYa", " ***********ALTA*MEDIO*DE*PAGO************");
+            Utils.logWs("EnviosYa", "Error:" + exe.getMessage());
         }
         return medio;
     }
@@ -95,8 +94,8 @@ public class PaymentBean {
                 }
             }
         } catch (Exception exe) {
-            Utils.logWS("EnviosYa", " ***********MODIFICACION*MEDIO*DE*PAGO************");
-            Utils.logWS("EnviosYa", "Error:" + exe.getMessage());
+            Utils.logWs("EnviosYa", " ***********MODIFICACION*MEDIO*DE*PAGO************");
+            Utils.logWs("EnviosYa", "Error:" + exe.getMessage());
         }
         return mdp;
     }
@@ -109,8 +108,8 @@ public class PaymentBean {
             ret = true;
 
         } catch (Exception exe) {
-            Utils.logWS("EnviosYa", " ***********ELIMINACION*MEDIO*DE*PAGO************");
-            Utils.logWS("EnviosYa", "Error:" + exe.getMessage());
+            Utils.logWs("EnviosYa", " ***********ELIMINACION*MEDIO*DE*PAGO************");
+            Utils.logWs("EnviosYa", "Error:" + exe.getMessage());
         }
         return ret;
     }
@@ -119,11 +118,11 @@ public class PaymentBean {
         List<PaymentEntity> list = new ArrayList();
         try {
             list = em
-                    .createQuery("select p.* from PaymentEntity p where cliente_id = " + idCliente)
+                    .createNativeQuery("select p.* from PaymentEntity p where p.cliente_id = " + idCliente)
                     .getResultList();
         } catch (Exception exe) {
-            Utils.logWS("EnviosYa", " ***********LISTAR*MEDIOS*DE*PAGO*************");
-            Utils.logWS("EnviosYa", "Error:" + exe.getMessage());
+            Utils.logWs("EnviosYa", " ***********LISTAR*MEDIOS*DE*PAGO*************");
+            Utils.logWs("EnviosYa", "Error:" + exe.getMessage());
         }
         return list;
     }

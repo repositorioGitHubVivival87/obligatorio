@@ -39,7 +39,11 @@ public class ClientEntity implements Serializable {
     @Column(length = 300)
     private String apellido;
     
+    @Column(length = 100)
     private String email;
+    
+    @Column(length = 1)
+    private Integer nivel;
     
     //CONSTRUCTOR
     public ClientEntity() {
@@ -100,6 +104,14 @@ public class ClientEntity implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Integer getNivel() {
+        return nivel;
+    }
+
+    public void setNivel(Integer nivel) {
+        this.nivel = nivel;
     }
     
 }

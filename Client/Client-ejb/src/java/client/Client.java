@@ -19,6 +19,7 @@ public class Client {
     private String nombre;
     private String apellido;
     private String email;
+    private Integer nivel;
 
     //CONSTRUCTOR
     public Client() {
@@ -80,4 +81,14 @@ public class Client {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public Integer getNivel() {
+        return nivel;
+    }
+
+    public void setNivel(Integer nivel) {
+        this.nivel = nivel;
+    }
+    
+    
 }

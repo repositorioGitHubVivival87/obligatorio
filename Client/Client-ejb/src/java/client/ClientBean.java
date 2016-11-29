@@ -5,7 +5,7 @@
  */
 package client;
 
-import herramientas.Utils;
+import tools.Utils;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -35,79 +35,84 @@ public class ClientBean {
         System.out.println("INSTANCIA CLIENT BEAN");
     }
 
-    public ClientEntity agregarCliente(String usuario, String contrasena, int ci,
-            String nombre, String apellido, String email) {
-        ClientEntity cli = null;
+    public String agregarCliente(String usuario, String contrasena, Integer ci,
+            String nombre, String apellido, String email, Integer nivel) {
+        String ret = "";
         try {
-            if (!esCliente(usuario, contrasena)) {
-                cli = new ClientEntity();
-                cli.setUsuario(usuario);
+            //si el nivel== 1 es cliente, si nivel==2 es administrador
+            List<Object> client = em
+                    .createNativeQuery("SELECT * FROM ClientEntity c "
+                            + "WHERE c.ci = " + ci).getResultList();
+            if (!client.isEmpty()) {
+                ret = "ERROR: Ya existe el cliente";
+            } else {
+                List<Object> user = em
+                        .createNativeQuery("SELECT * FROM ClientEntity c "
+                                + "WHERE c.usuario = '" + usuario + "'").getResultList();
+                if (!user.isEmpty()) {
+                    ret = "ERROR: Por favor ingrese otro nombre de usuario";
+                } else {
+                    ClientEntity cli = new ClientEntity();
+                    cli.setUsuario(usuario);
+                    cli.setContrasena(contrasena);
+                    cli.setCi(ci);
+                    cli.setNombre(nombre);
+                    cli.setApellido(apellido);
+                    cli.setEmail(email);
+                    cli.setNivel(nivel);
+
+                    em.persist(cli);
+                    ret = "EXITO";
+                }
+            }
+        } catch (Exception exe) {
+            Utils.logWs("EnviosYa", " ***********ALTA*CLIENTE************");
+            Utils.logWs("EnviosYa", "Error:" + exe.getMessage());
+            ret = exe.getMessage();
+        }
+        return ret;
+    }
+
+    public String modificarCliente(String usuario, String contrasena,
+            Integer id, Integer ci, String nombre, String apellido, String email, Integer nivel) {
+        String ret = "";
+        try {
+            //si el nivel== 1 es cliente, si nivel==2 es administrador
+            List<Object> client = em
+                    .createNativeQuery("SELECT * FROM ClientEntity c "
+                            + "WHERE c.id = " + id).getResultList();
+            if (client.isEmpty()) {
+                ret = "ERROR: No existe el cliente";
+            } else {
+                ClientEntity cli = em.find(ClientEntity.class, id);
                 cli.setContrasena(contrasena);
                 cli.setCi(ci);
                 cli.setNombre(nombre);
                 cli.setApellido(apellido);
                 cli.setEmail(email);
-
-                em.persist(cli);
+                cli.setNivel(nivel);
+                em.merge(cli);
+                ret = "EXITO";
             }
         } catch (Exception exe) {
-            Utils.logWS("EnviosYa", " ***********ALTA*CLIENTE************");
-            Utils.logWS("EnviosYa", "Error:" + exe.getMessage());
+            Utils.logWs("EnviosYa", " ***********MODIFICACION*CLIENTE************");
+            Utils.logWs("EnviosYa", "Error:" + exe.getMessage());
+            ret = exe.getMessage();
         }
-        return cli;
+        return ret;
     }
 
-    public ClientEntity modificarCliente(String usuario, String contrasena,
-            Integer id, Integer ci, String nombre, String apellido, String email) {
-        ClientEntity cli = null;
-        boolean estaCi = false;
+    public String eliminarCliente(String usuario, String contrasena, Integer id) {
+        String ret = "";
         try {
-            if (esCliente(usuario, contrasena)) {
-                List<ClientEntity> list = em
-                        .createQuery("select c from ClientEntity c")
-                        .getResultList();
-                for (int i = 0; i < list.size(); i++) {
-                    if (list.get(i).getCi().equals(ci)) {
-                        estaCi = true;
-                    }
-                }
-                for (int i = 0; i < list.size(); i++) {
-                    if (list.get(i).getId().equals(id) && estaCi && list.get(i).getCi().equals(ci)) {
-                        cli = em.find(ClientEntity.class, id);
-                        cli.setNombre(nombre);
-                        cli.setApellido(apellido);
-                        cli.setEmail(email);
-                        em.merge(cli);
-                    } else {
-                        if (list.get(i).getId().equals(id) && !estaCi) {
-                            cli = em.find(ClientEntity.class, id);
-                            cli.setCi(ci);
-                            cli.setNombre(nombre);
-                            cli.setApellido(apellido);
-                            cli.setEmail(email);
-                            em.merge(cli);
-                        }
-                    }
-                }
-            }
-        } catch (Exception exe) {
-            Utils.logWS("EnviosYa", " ***********MODIFICACION*CLIENTE************");
-            Utils.logWS("EnviosYa", "Error:" + exe.getMessage());
-        }
-        return cli;
-    }
+            ClientEntity cli = em.find(ClientEntity.class, id);
+            em.remove(cli);
+            ret = "EXITO";
 
-    public boolean eliminarCliente(String usuario, String contrasena, Integer id) {
-        boolean ret = false;
-        try {
-            if (esCliente(usuario, contrasena)) {
-                ClientEntity cli = em.find(ClientEntity.class, id);
-                em.remove(cli);
-                ret = true;
-            }
         } catch (Exception exe) {
-            Utils.logWS("EnviosYa", " ***********ELIMINACION*CLIENTE************");
-            Utils.logWS("EnviosYa", "Error:" + exe.getMessage());
+            Utils.logWs("EnviosYa", " ***********ELIMINACION*CLIENTE************");
+            Utils.logWs("EnviosYa", "Error:" + exe.getMessage());
+            ret = exe.getMessage();
         }
         return ret;
     }
@@ -116,11 +121,11 @@ public class ClientBean {
         List<ClientEntity> list = new ArrayList();
         try {
             list = em
-                    .createQuery("select * from ClientEntity c")
+                    .createNativeQuery("select * from ClientEntity c")
                     .getResultList();
         } catch (Exception exe) {
-            Utils.logWS("EnviosYa", " ***********LISTAR*CLIENTES*************");
-            Utils.logWS("EnviosYa", "Error:" + exe.getMessage());
+            Utils.logWs("EnviosYa", " ***********LISTAR*CLIENTES*************");
+            Utils.logWs("EnviosYa", "Error:" + exe.getMessage());
         }
         return list;
     }
@@ -136,8 +141,8 @@ public class ClientBean {
             cli.setEmail(ent.getEmail());
 
         } catch (Exception exe) {
-            Utils.logWS("EnviosYa", " ***********BUSCAR*CLIENTE*POR*ID************");
-            Utils.logWS("EnviosYa", "Error:" + exe.getMessage());
+            Utils.logWs("EnviosYa", " ***********BUSCAR*CLIENTE*POR*ID************");
+            Utils.logWs("EnviosYa", "Error:" + exe.getMessage());
         }
         return cli;
     }
@@ -147,7 +152,8 @@ public class ClientBean {
         try {
             List<ClientEntity> list = em
                     .createQuery("select c.* from ClientEntity c "
-                            + "where usuario = '" + usuario + "' and contrasena = '" + contrasena + "'")
+                            + "where usuario = '" + usuario + "' and "
+                            + "contrasena = '" + contrasena + "'")
                     .getResultList();
 
             if (list.size() > 0) {
@@ -155,27 +161,47 @@ public class ClientBean {
             }
 
         } catch (Exception exe) {
-            Utils.logWS("EnviosYa", " ***********ES*CLIENTE*************");
-            Utils.logWS("EnviosYa", "Error:" + exe.getMessage());
+            Utils.logWs("EnviosYa", " ***********ES*CLIENTE*************");
+            Utils.logWs("EnviosYa", "Error:" + exe.getMessage());
         }
         return esCli;
     }
 
-    public ClientEntity obtenerUnCliente(String usuario, String contrasena) {
-        ClientEntity cli = new ClientEntity();
+    public boolean esAdministrador(String usuario, String contrasena) {
+        boolean esAdmin = false;
         try {
             List<ClientEntity> list = em
                     .createQuery("select c.* from ClientEntity c "
-                            + "where usuario = '" + usuario + "' and contrasena = '" + contrasena + "'")
+                            + "where usuario = '" + usuario + "' and "
+                            + "contrasena = '" + contrasena + "' and nivel = " + 2)
+                    .getResultList();
+            if (list.size() > 0) {
+                esAdmin = true;
+            }
+
+        } catch (Exception exe) {
+            Utils.logWs("EnviosYa", " ***********ES*ADMINISTRADOR*************");
+            Utils.logWs("EnviosYa", "Error:" + exe.getMessage());
+        }
+        return esAdmin;
+    }
+
+    public Object obtenerUnCliente(String usuario, String contrasena) {
+   //     ClientEntity cli = new ClientEntity();
+        Object ret = new Object();
+        try {
+            List<Object> list = em
+                    .createNativeQuery("select c.* from ClientEntity c "
+                            + "where c.usuario = '" + usuario + "' and c.contrasena = '" + contrasena + "'")
                     .getResultList();
 
             if (!list.isEmpty()) {
-                cli = list.get(0);
+                ret = list.get(0);
             }
         } catch (Exception exe) {
-            Utils.logWS("EnviosYa", " ***********ES*CLIENTE*************");
-            Utils.logWS("EnviosYa", "Error:" + exe.getMessage());
+            Utils.logWs("EnviosYa", " ***********ES*CLIENTE*************");
+            Utils.logWs("EnviosYa", "Error:" + exe.getMessage());
         }
-        return cli;
+        return ret;
     }
 }
