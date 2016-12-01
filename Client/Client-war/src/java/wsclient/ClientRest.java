@@ -76,10 +76,10 @@ public class ClientRest {
 
     //OBTENER UN CLIENTE
     @GET
-    @Path("/{id}")
+    @Path("/obtenerCliente")
     @Produces(MediaType.APPLICATION_JSON)
-    public String obtenerUnCliente(@QueryParam("usuario") String usuario, @QueryParam("contrasena") String contrasena) {
-        return gson.toJson(cliente.obtenerUnCliente(usuario, contrasena));
+    public String obtenerUnCliente(@QueryParam("id") Integer id) {
+        return gson.toJson(cliente.obtenerUnCliente(id));
     }
     
     //VALIDAR CLIENTE
@@ -90,6 +90,13 @@ public class ClientRest {
         return gson.toJson(cliente.esCliente(usuario, contrasena));
     }     
     
+    //VALIDAR CLIENTE LOGUEADO
+    @GET
+    @Path("/validarClienteLogueado")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String validarClienteLogueado(@QueryParam("token") String token, @QueryParam("idCliente") Integer id) {
+        return gson.toJson(cliente.esClienteLogueado(token, id));
+    } 
     
     @PUT
     @Path("/login")
