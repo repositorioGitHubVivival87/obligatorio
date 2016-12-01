@@ -84,9 +84,26 @@ public class ClientRest {
     
     //VALIDAR CLIENTE
     @GET
-    @Path("/{usuario}/{contrasena}")
+    @Path("/validarCliente")
     @Produces(MediaType.APPLICATION_JSON)
     public String validarCliente(@QueryParam("usuario") String usuario, @QueryParam("contrasena") String contrasena) {
         return gson.toJson(cliente.esCliente(usuario, contrasena));
     }     
+    
+    
+    @PUT
+    @Path("/login")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String login(@QueryParam("usuario") String usuario, @QueryParam("contrasena") String contrasena) {
+        return gson.toJson(cliente.login(usuario, contrasena));
+    }
+    
+    @PUT 
+    @Path("/logout")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String logout(@QueryParam("idUsuario") Integer idUsuario) {
+        return gson.toJson(cliente.logout(idUsuario));
+    }
+    
+    
 }
