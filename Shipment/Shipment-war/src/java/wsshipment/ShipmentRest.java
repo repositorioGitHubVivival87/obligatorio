@@ -49,21 +49,24 @@ public class ShipmentRest {
     @Consumes(MediaType.APPLICATION_JSON)
     public String notificarEnvio(@PathParam("unCadete")  Integer unCadete, 
             @PathParam("idEnvio")  Integer idEnvio) {
+        
         return "";
     }
     
     @POST
-    @Path("/{unCadete}/{unVehiculo}/{clienteEnvia}/{clienteRecibe}/{direccionRetiro}/{direccionRecibo}/{descripcion}")
+    @Path("/solicitudEnvio")
     @Consumes(MediaType.APPLICATION_JSON)
-    public String solicitudEnvio(@PathParam("unCadete")  Integer unCadete, 
-            @PathParam("unVehiculo") Integer unVehiculo,
-            @PathParam("clienteEnvia")  Integer clienteEnvia, 
-            @PathParam("clienteRecibe")  Integer clienteRecibe, 
-            @PathParam("direccionRetiro") String direccionRetiro, 
-            @PathParam("direccionRecibo") String direccionRecibo,
-            @PathParam("descripcion") String descripcion) {
+    public String solicitudEnvio(@QueryParam("usuario") String usuario, @QueryParam("contrasena") String contrasena,
+            @QueryParam("unCadete")  Integer unCadete, 
+            @QueryParam("unVehiculo") Integer unVehiculo,
+            @QueryParam("clienteEnvia")  Integer clienteEnvia, 
+            @QueryParam("clienteRecibe")  Integer clienteRecibe, 
+            @QueryParam("direccionRetiro") String direccionRetiro, 
+            @QueryParam("direccionRecibo") String direccionRecibo,
+            @QueryParam("descripcion") String descripcion) {
         //CON ESTADO PENDIENTE
-        return ""; //gson.toJson(envio.solicitudEnvio(unCadete, unVehiculo, clienteEnvia, clienteRecibe, direccionRetiro, direccionRecibo, descripcion));
+        return gson.toJson(envio.solicitudEnvio(usuario, contrasena, unCadete, unVehiculo, 
+                clienteEnvia, clienteRecibe, direccionRetiro, direccionRecibo, descripcion));
     }
 
     @POST
