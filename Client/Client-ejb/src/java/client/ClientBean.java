@@ -14,6 +14,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import tools.Utils;
 
@@ -29,8 +30,7 @@ public class ClientBean {
 
     @PersistenceContext
     private EntityManager em;
-    
-    Utils util = new Utils();
+
     public ClientBean() {
 
     }
@@ -68,17 +68,15 @@ public class ClientBean {
                     cli.setNivel(nivel);
 
                     em.persist(cli);
-                    ret = "EXITO";
-                    
-                    util.logInfo("MENSAJE");
-                    util.logInfo("***********ALTA*CLIENTE************");
-                    util.logInfo("Se ingreso el nuevo cliente: " + ci);
+                    ret="EXITO";
+                    Utils.logInfo("***********ALTA*CLIENTE************");
+                    Utils.logInfo("Se ingreso el nuevo cliente: " + ci);
                 }
             }
         } catch (Exception exe) {
 
-            util.logError("***********ALTA*CLIENTE************");
-            util.logError(exe.getMessage());
+            Utils.logError("***********ALTA*CLIENTE************");
+            Utils.logError(exe.getMessage());
             ret = exe.getMessage();
         }
         return ret;
@@ -104,6 +102,9 @@ public class ClientBean {
                 cli.setNivel(nivel);
                 em.merge(cli);
                 ret = "EXITO";
+                Utils.logInfo("***********MODIFICAR*CLIENTE************");
+                Utils.logInfo("Se ingreso el nuevo cliente: " + ci);
+                
             }
         } catch (Exception exe) {
             Utils.logError(" ***********MODIFICACION*CLIENTE************");
@@ -116,29 +117,45 @@ public class ClientBean {
     public String login(String usuario, String contrasena) {
         String ret = "";
         try {
-            List<ClientEntity> list = em
-                    .createNativeQuery("select c.* from ClientEntity c "
-                            + "where c.usuario = '" + usuario + "' and "
-                            + "c.contrasena = '" + contrasena + "'")
-                    .getResultList();
-            if (list.isEmpty()) {
+            String queryString = "SELECT c.id FROM ClientEntity c "
+                    + "WHERE c.usuario IS NULL OR LOWER(c.usuario) = LOWER(:usuario) AND "
+                    + "c.contrasena IS NULL OR LOWER(c.contrasena) = LOWER(:contrasena)";
+
+            Query query = em.createQuery(queryString);
+
+            query.setParameter("usuario", usuario);
+            query.setParameter("contrasena", contrasena);
+
+            Object client = query.getSingleResult();
+
+            if (client == null) {
                 ret = "ERROR: Usuario o Contraseña invalido";
+                Utils.logInfo("Acceso Denegado: Usuario:" + usuario + " Contrasena: " + contrasena);
             } else {
-                Integer id = list.get(0).getId();
+                int id = Integer.parseInt(client.toString());
                 ClientEntity cli = em.find(ClientEntity.class, id);
 
-                Random rnd = new Random();
-                System.out.println(rnd.nextLong());
-                String token = rnd.toString();
-
-                cli.setNombre(token);
-
+                String token = "";
+                long milis = new java.util.GregorianCalendar().getTimeInMillis();
+                Random random = new Random(milis);
+                int inicio = 0;
+                while (inicio < 20) {
+                    char caracter = (char) random.nextInt(255);
+                    if ((caracter >= '0' && caracter <= '9') || (caracter >= 'A' && caracter <= 'Z')) {
+                        token += caracter;
+                        inicio++;
+                    }
+                }
+                cli.setToken(token);
                 em.merge(cli);
 
                 //La idea ademas de loguear el cliente es guardar la session para luego tener un 
                 //proceso que cada tanto tiempo la
                 //inactive por seguridad y tambien borre el token del usuario.
-                ret = "LOGIN";
+                
+                //Logueamos los accesos para la Auditoria
+                Utils.logInfo("Acceso Cliente: " + cli.getNombre());
+                ret = "EXITO";
             }
         } catch (Exception exe) {
             Utils.logError(" ***********MODIFICACION*CLIENTE************");
@@ -151,10 +168,10 @@ public class ClientBean {
     public String logout(Integer id) {
         String ret = "";
         try {
-
             ClientEntity cli = em.find(ClientEntity.class, id);
             String token = "";
-            cli.setNombre(token);
+
+            cli.setToken(token);
 
             //Aqui la idea era ya tener el usuario logueado y poder borrarole el tocken directamente, 
             //pedimos el id por parametro porque no nos dio para implementar el manejo de la session.
@@ -234,6 +251,24 @@ public class ClientBean {
         return esCli;
     }
 
+    public boolean esClienteLogueado(String token, Integer id) {
+        boolean esCli = false;
+        try {
+
+            ClientEntity cli = em.find(ClientEntity.class, id);
+            if (cli != null) {
+                String tok = cli.getToken();
+                if (tok.equalsIgnoreCase(token)) {
+                    esCli = true;
+                }
+            }
+        } catch (Exception exe) {
+            Utils.logError(" ***********CONSULTA CLIENTE LOGUEADO*************");
+            Utils.logError(exe.getMessage());
+        }
+        return esCli;
+    }
+
     public boolean esAdministrador(String usuario, String contrasena) {
         boolean esAdmin = false;
         try {
@@ -253,16 +288,13 @@ public class ClientBean {
         return esAdmin;
     }
 
-    public Object obtenerUnCliente(String usuario, String contrasena) {
-        Object ret = new Object();
+    public ClientEntity obtenerUnCliente(Integer id) {
+        ClientEntity ret = new ClientEntity();
         try {
-            List<Object> list = em
-                    .createNativeQuery("select c.* from ClientEntity c "
-                            + "where c.usuario = '" + usuario + "' and c.contrasena = '" + contrasena + "'")
-                    .getResultList();
+            ClientEntity cli = em.find(ClientEntity.class, id);
 
-            if (!list.isEmpty()) {
-                ret = list.get(0);
+            if (cli != null) {
+                ret = cli;
             }
         } catch (Exception exe) {
             Utils.logError(" ***********ES*CLIENTE*************");

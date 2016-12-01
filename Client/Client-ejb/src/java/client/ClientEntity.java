@@ -45,6 +45,9 @@ public class ClientEntity implements Serializable {
     @Column(length = 1)
     private Integer nivel;
     
+    @Column(length = 30)
+    private String token;
+    
     //CONSTRUCTOR
     public ClientEntity() {
     }
@@ -112,6 +115,14 @@ public class ClientEntity implements Serializable {
 
     public void setNivel(Integer nivel) {
         this.nivel = nivel;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
     
 }

@@ -48,7 +48,6 @@ public class PaymentEntity implements Serializable {
     }
      
     //SET AND GET
-
     public Integer getId() {
         return id;
     }
@@ -104,5 +103,4 @@ public class PaymentEntity implements Serializable {
     public void setCliente(ClientEntity cliente) {
         this.cliente = cliente;
     }
-    
 }

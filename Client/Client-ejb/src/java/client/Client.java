@@ -20,6 +20,7 @@ public class Client {
     private String apellido;
     private String email;
     private Integer nivel;
+    private String token;
 
     //CONSTRUCTOR
     public Client() {
@@ -89,6 +90,13 @@ public class Client {
     public void setNivel(Integer nivel) {
         this.nivel = nivel;
     }
-    
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
     
 }

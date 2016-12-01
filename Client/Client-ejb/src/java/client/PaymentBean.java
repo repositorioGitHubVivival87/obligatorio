@@ -40,8 +40,6 @@ public class PaymentBean {
             Integer fechavencimiento, Integer cvv, Integer nroTarjeta) {
         PaymentEntity medio = null;
         try {
-            //ClientEntity cliente = em.find(ClientEntity.class, idCliente);
-            
             medio = new PaymentEntity();
             medio.setSello(sello);
             medio.setNombreembosado(nombreembosado);

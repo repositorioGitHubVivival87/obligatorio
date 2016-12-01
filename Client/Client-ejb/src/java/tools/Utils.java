@@ -2,11 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package tools;
 
-import java.io.File;
-import java.net.URL;
-import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
@@ -20,14 +18,12 @@ import log.Escribir;
  */
 public class Utils {
 
-    //private static Logger log = Logger.getLogger(Utils.class);
-    private static Escribir log = new Escribir();
-    private static String modulo = "CLIENT";
+    private static final String modulo = "CLIENT";
     
     public static void logInfo(String mensaje) {
         try {
             
-            log.logInfo(" [" + modulo + "] " + mensaje);
+            Escribir.logInfo(" [" + modulo + "] " + mensaje);
 
         } catch (Exception ex) {
             System.out.println("Error Write Log " + ex.getMessage());
@@ -35,10 +31,9 @@ public class Utils {
     }
 
     public static void logWarn(String mensaje) {
-        File miDir = new File(".");
         try {
             
-            log.logWarning(" [" + modulo + "] " + mensaje);
+            Escribir.logWarning(" [" + modulo + "] " + mensaje);
 
         } catch (Exception ex) {
             System.out.println("Error Write Log " + ex.getMessage());
@@ -48,7 +43,7 @@ public class Utils {
     public static void logError(String mensaje) {
         try {
             
-            log.logError(" [" + modulo + "] " + mensaje);
+            Escribir.logError(" [" + modulo + "] " + mensaje);
 
         } catch (Exception ex) {
             System.out.println("Error Write Log " + ex.getMessage());
