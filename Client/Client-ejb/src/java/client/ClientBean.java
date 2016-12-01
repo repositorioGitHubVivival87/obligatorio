@@ -3,16 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package client;
 
-import tools.Utils;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import javax.annotation.PostConstruct;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
+import tools.Utils;
 
 /**
  *
@@ -26,8 +29,10 @@ public class ClientBean {
 
     @PersistenceContext
     private EntityManager em;
-
+    
+    Utils util = new Utils();
     public ClientBean() {
+
     }
 
     @PostConstruct
@@ -38,6 +43,7 @@ public class ClientBean {
     public String agregarCliente(String usuario, String contrasena, Integer ci,
             String nombre, String apellido, String email, Integer nivel) {
         String ret = "";
+
         try {
             //si el nivel== 1 es cliente, si nivel==2 es administrador
             List<Object> client = em
@@ -63,11 +69,16 @@ public class ClientBean {
 
                     em.persist(cli);
                     ret = "EXITO";
+                    
+                    util.logInfo("MENSAJE");
+                    util.logInfo("***********ALTA*CLIENTE************");
+                    util.logInfo("Se ingreso el nuevo cliente: " + ci);
                 }
             }
         } catch (Exception exe) {
-            Utils.logWs("EnviosYa", " ***********ALTA*CLIENTE************");
-            Utils.logWs("EnviosYa", "Error:" + exe.getMessage());
+
+            util.logError("***********ALTA*CLIENTE************");
+            util.logError(exe.getMessage());
             ret = exe.getMessage();
         }
         return ret;
@@ -95,8 +106,64 @@ public class ClientBean {
                 ret = "EXITO";
             }
         } catch (Exception exe) {
-            Utils.logWs("EnviosYa", " ***********MODIFICACION*CLIENTE************");
-            Utils.logWs("EnviosYa", "Error:" + exe.getMessage());
+            Utils.logError(" ***********MODIFICACION*CLIENTE************");
+            Utils.logError(exe.getMessage());
+            ret = exe.getMessage();
+        }
+        return ret;
+    }
+
+    public String login(String usuario, String contrasena) {
+        String ret = "";
+        try {
+            List<ClientEntity> list = em
+                    .createNativeQuery("select c.* from ClientEntity c "
+                            + "where c.usuario = '" + usuario + "' and "
+                            + "c.contrasena = '" + contrasena + "'")
+                    .getResultList();
+            if (list.isEmpty()) {
+                ret = "ERROR: Usuario o Contraseña invalido";
+            } else {
+                Integer id = list.get(0).getId();
+                ClientEntity cli = em.find(ClientEntity.class, id);
+
+                Random rnd = new Random();
+                System.out.println(rnd.nextLong());
+                String token = rnd.toString();
+
+                cli.setNombre(token);
+
+                em.merge(cli);
+
+                //La idea ademas de loguear el cliente es guardar la session para luego tener un 
+                //proceso que cada tanto tiempo la
+                //inactive por seguridad y tambien borre el token del usuario.
+                ret = "LOGIN";
+            }
+        } catch (Exception exe) {
+            Utils.logError(" ***********MODIFICACION*CLIENTE************");
+            Utils.logError(exe.getMessage());
+            ret = exe.getMessage();
+        }
+        return ret;
+    }
+
+    public String logout(Integer id) {
+        String ret = "";
+        try {
+
+            ClientEntity cli = em.find(ClientEntity.class, id);
+            String token = "";
+            cli.setNombre(token);
+
+            //Aqui la idea era ya tener el usuario logueado y poder borrarole el tocken directamente, 
+            //pedimos el id por parametro porque no nos dio para implementar el manejo de la session.
+            em.merge(cli);
+            ret = "ACTUALIZO";
+
+        } catch (Exception exe) {
+            Utils.logError(" ***********MODIFICACION*CLIENTE************");
+            Utils.logError(exe.getMessage());
             ret = exe.getMessage();
         }
         return ret;
@@ -110,8 +177,8 @@ public class ClientBean {
             ret = "EXITO";
 
         } catch (Exception exe) {
-            Utils.logWs("EnviosYa", " ***********ELIMINACION*CLIENTE************");
-            Utils.logWs("EnviosYa", "Error:" + exe.getMessage());
+            Utils.logError(" ***********ELIMINACION*CLIENTE************");
+            Utils.logError(exe.getMessage());
             ret = exe.getMessage();
         }
         return ret;
@@ -124,8 +191,8 @@ public class ClientBean {
                     .createNativeQuery("select * from ClientEntity c")
                     .getResultList();
         } catch (Exception exe) {
-            Utils.logWs("EnviosYa", " ***********LISTAR*CLIENTES*************");
-            Utils.logWs("EnviosYa", "Error:" + exe.getMessage());
+            Utils.logError(" ***********LISTAR*CLIENTES*************");
+            Utils.logError(exe.getMessage());
         }
         return list;
     }
@@ -141,8 +208,8 @@ public class ClientBean {
             cli.setEmail(ent.getEmail());
 
         } catch (Exception exe) {
-            Utils.logWs("EnviosYa", " ***********BUSCAR*CLIENTE*POR*ID************");
-            Utils.logWs("EnviosYa", "Error:" + exe.getMessage());
+            Utils.logError(" ***********BUSCAR*CLIENTE*POR*ID************");
+            Utils.logError(exe.getMessage());
         }
         return cli;
     }
@@ -151,9 +218,9 @@ public class ClientBean {
         boolean esCli = false;
         try {
             List<ClientEntity> list = em
-                    .createQuery("select c.* from ClientEntity c "
-                            + "where usuario = '" + usuario + "' and "
-                            + "contrasena = '" + contrasena + "'")
+                    .createNativeQuery("select c.* from ClientEntity c "
+                            + "where c.usuario = '" + usuario + "' and "
+                            + "c.contrasena = '" + contrasena + "'")
                     .getResultList();
 
             if (list.size() > 0) {
@@ -161,8 +228,8 @@ public class ClientBean {
             }
 
         } catch (Exception exe) {
-            Utils.logWs("EnviosYa", " ***********ES*CLIENTE*************");
-            Utils.logWs("EnviosYa", "Error:" + exe.getMessage());
+            Utils.logError(" ***********ES*CLIENTE*************");
+            Utils.logError(exe.getMessage());
         }
         return esCli;
     }
@@ -180,14 +247,13 @@ public class ClientBean {
             }
 
         } catch (Exception exe) {
-            Utils.logWs("EnviosYa", " ***********ES*ADMINISTRADOR*************");
-            Utils.logWs("EnviosYa", "Error:" + exe.getMessage());
+            Utils.logError(" ***********ES*ADMINISTRADOR*************");
+            Utils.logError(exe.getMessage());
         }
         return esAdmin;
     }
 
     public Object obtenerUnCliente(String usuario, String contrasena) {
-   //     ClientEntity cli = new ClientEntity();
         Object ret = new Object();
         try {
             List<Object> list = em
@@ -199,8 +265,8 @@ public class ClientBean {
                 ret = list.get(0);
             }
         } catch (Exception exe) {
-            Utils.logWs("EnviosYa", " ***********ES*CLIENTE*************");
-            Utils.logWs("EnviosYa", "Error:" + exe.getMessage());
+            Utils.logError(" ***********ES*CLIENTE*************");
+            Utils.logError(exe.getMessage());
         }
         return ret;
     }

@@ -52,8 +52,8 @@ public class PaymentBean {
             em.persist(medio);
             
         } catch (Exception exe) {
-            Utils.logWs("EnviosYa", " ***********ALTA*MEDIO*DE*PAGO************");
-            Utils.logWs("EnviosYa", "Error:" + exe.getMessage());
+            Utils.logError(" ***********ALTA*MEDIO*DE*PAGO************");
+            Utils.logError(exe.getMessage());
         }
         return medio;
     }
@@ -94,8 +94,8 @@ public class PaymentBean {
                 }
             }
         } catch (Exception exe) {
-            Utils.logWs("EnviosYa", " ***********MODIFICACION*MEDIO*DE*PAGO************");
-            Utils.logWs("EnviosYa", "Error:" + exe.getMessage());
+            Utils.logError(" ***********MODIFICACION*MEDIO*DE*PAGO************");
+            Utils.logError(exe.getMessage());
         }
         return mdp;
     }
@@ -108,8 +108,8 @@ public class PaymentBean {
             ret = true;
 
         } catch (Exception exe) {
-            Utils.logWs("EnviosYa", " ***********ELIMINACION*MEDIO*DE*PAGO************");
-            Utils.logWs("EnviosYa", "Error:" + exe.getMessage());
+            Utils.logError(" ***********ELIMINACION*MEDIO*DE*PAGO************");
+            Utils.logError(exe.getMessage());
         }
         return ret;
     }
@@ -121,8 +121,8 @@ public class PaymentBean {
                     .createNativeQuery("select p.* from PaymentEntity p where p.cliente_id = " + idCliente)
                     .getResultList();
         } catch (Exception exe) {
-            Utils.logWs("EnviosYa", " ***********LISTAR*MEDIOS*DE*PAGO*************");
-            Utils.logWs("EnviosYa", "Error:" + exe.getMessage());
+            Utils.logError(" ***********LISTAR*MEDIOS*DE*PAGO*************");
+            Utils.logError(exe.getMessage());
         }
         return list;
     }
