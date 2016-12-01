@@ -5,17 +5,12 @@
 
 package tools;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
+import log.Escribir;
 
 /**
  *
@@ -23,28 +18,38 @@ import java.util.Locale;
  */
 public class Utils {
 
-    public static void logWs(String moduleName, String mensaje) {
+    private static final String modulo = "CLIENT";
+    
+    public static void logInfo(String mensaje) {
         try {
-            DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-            DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+            
+            Escribir.logInfo(" [" + modulo + "] " + mensaje);
 
-            Date fecha = new Date();
-            String currentDate = dateFormat.format(fecha);
-            String currentTime = timeFormat.format(fecha);
-            Long threadId = Thread.currentThread().getId();
-
-            String fileoutput = "../logs/" + moduleName + "_" + currentDate + "_" + Long.toString(threadId) + ".log";
-            File outputFile = new File(fileoutput);
-            BufferedWriter salida = new BufferedWriter(new FileWriter(outputFile, true));
-            salida.write(currentTime + " : " + mascararString(mensaje));
-            salida.newLine();
-            salida.close();
-
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             System.out.println("Error Write Log " + ex.getMessage());
         }
     }
-    
+
+    public static void logWarn(String mensaje) {
+        try {
+            
+            Escribir.logWarning(" [" + modulo + "] " + mensaje);
+
+        } catch (Exception ex) {
+            System.out.println("Error Write Log " + ex.getMessage());
+        }
+    }
+
+    public static void logError(String mensaje) {
+        try {
+            
+            Escribir.logError(" [" + modulo + "] " + mensaje);
+
+        } catch (Exception ex) {
+            System.out.println("Error Write Log " + ex.getMessage());
+        }
+    }
+
     public static String soloNumerosYletras(String cadena) {
         String salida = "";
 
@@ -55,7 +60,7 @@ public class Utils {
         }
         return salida;
     }
-    
+
     public static boolean validoDigito(String cartao) {
 
         boolean resultado = false;
@@ -88,7 +93,7 @@ public class Utils {
         }
         return resultado;
     }
-    
+
     public static String mascararString(String cadena) {
 
         String cadenaOriginal = cadena;
@@ -102,11 +107,11 @@ public class Utils {
             while ((pointer + 16) <= cadena.length()) {
                 String potencialCartao = cadena.substring(pointer, pointer + 16);
                 if (isNumeric(potencialCartao)) {
-                    if (potencialCartao.substring(0, 1).equals("4") 
-                            || potencialCartao.substring(0, 1).equals("5") 
+                    if (potencialCartao.substring(0, 1).equals("4")
+                            || potencialCartao.substring(0, 1).equals("5")
                             || potencialCartao.substring(0, 1).equals("6")) {
                         if (validoDigito(potencialCartao)) {
-                            cadenaMascarada = cadenaMascarada 
+                            cadenaMascarada = cadenaMascarada
                                     + potencialCartao.substring(0, 6) + "******" + potencialCartao.substring(12);
                             pointer = pointer + 16;
                         } else {
@@ -142,7 +147,7 @@ public class Utils {
         return cadenaSalida;
 
     }
-    
+
     public static boolean isNumeric(String cadena) {
         try {
             Long.parseLong(cadena);
@@ -190,7 +195,7 @@ public class Utils {
         }
         return toHexadecimal(digest);
     }
-    
+
     private static String toHexadecimal(byte[] digest) {
         String hash = "";
         for (byte aux : digest) {

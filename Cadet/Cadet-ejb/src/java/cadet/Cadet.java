@@ -11,17 +11,15 @@ package cadet;
  * @author Vivi
  */
 public class Cadet {
-
     private Integer id;
+    private String usuario;
+    private String contrasena;
     private Integer ci;
     private String nombre;
     private String apellido;
     private String email;
-    private String latitud;
-    private String longitud;
-    private String estado;
-    private String rating;
-    
+    private Integer rating;
+
     //CONSTRUCTOR
     public Cadet() {
     }
@@ -33,6 +31,22 @@ public class Cadet {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
+
+    public String getContrasena() {
+        return contrasena;
+    }
+
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
     }
 
     public Integer getCi() {
@@ -67,36 +81,12 @@ public class Cadet {
         this.email = email;
     }
 
-    public String getLatitud() {
-        return latitud;
-    }
-
-    public void setLatitud(String latitud) {
-        this.latitud = latitud;
-    }
-
-    public String getLongitud() {
-        return longitud;
-    }
-
-    public void setLongitud(String longitud) {
-        this.longitud = longitud;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
-    public String getRating() {
+    public Integer getRating() {
         return rating;
     }
 
-    public void setRating(String rating) {
+    public void setRating(Integer rating) {
         this.rating = rating;
     }
-
+    
 }

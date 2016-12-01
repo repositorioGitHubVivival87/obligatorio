@@ -11,7 +11,6 @@ package cadet;
  * @author Vivi
  */
 public class Vehicle {
-
     private Integer id;
     private String matricula;
     private String descripcion;

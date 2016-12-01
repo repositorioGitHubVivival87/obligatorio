@@ -27,6 +27,12 @@ public class CadetEntity implements Serializable {
     @Column(unique = true)
     private Integer ci;
     
+    @Column(length = 30)
+    private String usuario;
+    
+    @Column(length = 64)
+    private String contrasena;
+    
     @Column(length = 300)
     private String nombre;
 
@@ -35,13 +41,10 @@ public class CadetEntity implements Serializable {
     
     @Column(length = 100)
     private String email;
-    
-    @Column(length = 10)
-    private String estado;
-    
-    @Column(length = 10)
-    private String rating;
-    
+        
+    @Column(length = 100)
+    private Integer rating;
+        
     //CONSTRUCTOR
     public CadetEntity() {
     }
@@ -53,6 +56,22 @@ public class CadetEntity implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
+
+    public String getContrasena() {
+        return contrasena;
+    }
+
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
     }
 
     public Integer getCi() {
@@ -87,44 +106,11 @@ public class CadetEntity implements Serializable {
         this.email = email;
     }
 
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
-    public String getRating() {
+    public Integer getRating() {
         return rating;
     }
 
-    public void setRating(String rating) {
+    public void setRating(Integer rating) {
         this.rating = rating;
-    }
- 
-    //METODOS
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += id != null ? id.hashCode() : 0;
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        if (!(object instanceof CadetEntity)) {
-            return false;
-        }
-        CadetEntity other = (CadetEntity) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "Entity.CadetEntity[ id=" + id + " ]";
     }
 }

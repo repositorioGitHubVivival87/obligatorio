@@ -5,15 +5,14 @@
  */
 package cadet;
 
-import tools.Utils;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 import javax.annotation.PostConstruct;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import tools.Utils;
 
 /**
  *
@@ -29,65 +28,89 @@ public class CadetBean {
     private EntityManager em;
 
     public CadetBean() {
+
     }
 
     @PostConstruct
     private void init() {
-        System.out.println("INSTANCIA CADETE BEAN");
+        System.out.println("INSTANCIA CADET BEAN");
     }
 
-    public CadetEntity agregarCadete(String usuario, String contrasena, int ci,
+    public String agregarCadete(String usuario, String contrasena, Integer ci,
             String nombre, String apellido, String email) {
-        CadetEntity cadete = null;
+        String ret = "";
+
         try {
-            //if (!esCadete(usuario, contrasena)) {
-            cadete = new CadetEntity();
-            cadete.setCi(ci);
-            cadete.setNombre(nombre);
-            cadete.setApellido(apellido);
-            cadete.setEmail(email);
-            cadete.setEstado("I");
-            cadete.setRating("0");
-            em.persist(cadete);
-            //}
+            List<Object> cadet = em
+                    .createNativeQuery("SELECT * FROM CadetEntity c "
+                            + "WHERE c.ci = " + ci).getResultList();
+            if (!cadet.isEmpty()) {
+                ret = "ERROR: Ya existe el cadete";
+            } else {
+                List<Object> user = em
+                        .createNativeQuery("SELECT * FROM CadetEntity c "
+                                + "WHERE c.usuario = '" + usuario + "'").getResultList();
+                if (!user.isEmpty()) {
+                    ret = "ERROR: Por favor ingrese otro nombre de usuario";
+                } else {
+                    CadetEntity cad = new CadetEntity();
+                    cad.setUsuario(usuario);
+                    cad.setContrasena(contrasena);
+                    cad.setCi(ci);
+                    cad.setNombre(nombre);
+                    cad.setApellido(apellido);
+                    cad.setEmail(email);
+
+                    em.persist(cad);
+                    ret = "EXITO";
+
+                    Utils.logInfo("***********ALTA*CADETE************");
+                    Utils.logInfo("Se ingreso el nuevo cadete: " + ci);
+                }
+            }
         } catch (Exception exe) {
-            Utils.logWs("EnviosYa", " ***********ALTA*CADETE************");
-            Utils.logWs("EnviosYa", "Error:" + exe.getMessage());
+            Utils.logError("***********ALTA*CADETE************");
+            Utils.logError(exe.getMessage());
+            ret = exe.getMessage();
         }
-        return cadete;
+        return ret;
     }
 
-    public CadetEntity modificarCadete(String usuario, String contrasena, Integer id, Integer ci,
+    public String modificarCadete(String usuario, String contrasena, Integer id, Integer ci,
             String nombre, String apellido, String email) {
-        CadetEntity cadete = null;
+        String ret = "";
         try {
-            //if (esCadete(usuario, contrasena)) {
-            cadete = em.find(CadetEntity.class, id);
+            CadetEntity cadete = em.find(CadetEntity.class, id);
             cadete.setCi(ci);
             cadete.setNombre(nombre);
             cadete.setApellido(apellido);
             cadete.setEmail(email);
             em.merge(cadete);
-            //}
+            ret = "EXITO";
+
+            Utils.logInfo("***********MODIFICAR*CADETE************");
+            Utils.logInfo("Se modifico el cadete: " + ci);
         } catch (Exception exe) {
-            Utils.logWs("EnviosYa", " ***********MODIFICACION*CADETE************");
-            Utils.logWs("EnviosYa", "Error:" + exe.getMessage());
+            Utils.logError(" ***********MODIFICACION*CADETE************");
+            Utils.logError(exe.getMessage());
+            ret = exe.getMessage();
         }
-        return cadete;
+        return ret;
     }
 
-    public boolean eliminarCadete(String usuario, String contrasena, Integer id) {
-        boolean ret = false;
-
+    public String eliminarCadete(String usuario, String contrasena, Integer id) {
+        String ret = "";
         try {
-            //if (esCadete(usuario, contrasena)) {
             CadetEntity cadete = em.find(CadetEntity.class, id);
             em.remove(cadete);
-            ret = true;
-    //}
+            ret = "EXITO";
+
+            Utils.logInfo("***********ELIMINAR*CADETE************");
+            Utils.logInfo("Se elimino correctamente el cadete con id: " + id);
         } catch (Exception exe) {
-            Utils.logWs("EnviosYa", " ***********ELIMINACION*CADETE************");
-            Utils.logWs("EnviosYa", "Error:" + exe.getMessage());
+            Utils.logError(" ***********ELIMINACION*CADETE************");
+            Utils.logError(exe.getMessage());
+            ret = exe.getMessage();
         }
         return ret;
     }
@@ -100,51 +123,28 @@ public class CadetBean {
                     .getResultList();
 
         } catch (Exception exe) {
-            Utils.logWs("EnviosYa", " ***********LISTAR*CADETES************");
-            Utils.logWs("EnviosYa", "Error:" + exe.getMessage());
+            Utils.logError(" ***********LISTAR*CADETES************");
+            Utils.logError(exe.getMessage());
         }
         return list;
     }
 
     public List<CadetEntity> listarCadetesMasCercanos(String latitud, String longitud) {
-        List<CadetEntity> list = new ArrayList();
+        List<CadetEntity> todos = new ArrayList();
         try {
-            List<CadetEntity> todos = em
-                    .createNativeQuery("select * from CadetEntity c")
+            todos = em
+                    .createNativeQuery("select * from CadetEntity c limit 4")
                     .getResultList();
-            double total = Double.MAX_VALUE;
-            Integer cadetes = 0;
-            double latOrigen = Double.valueOf(latitud);
-            double longOrigen = Double.valueOf(longitud);
-            while (cadetes < 4) {
-                for (int i = 0; i < todos.size(); i++) {
-                    double latCadete = -34;//obtenerLatCadete(todos.get(i));
-                    double longCadete = 38;//obtenerLongCadete(todos.get(i));
-                    double lat = latOrigen - latCadete;
-                    double longi = longOrigen - longCadete;
-                    double suma = Math.abs(lat + longi);
-                    if (suma < total) {
-                        total = suma;
-                    }
-                    todos.remove(todos.get(i));
-                } 
-                cadetes++;
-            }
+
+            Utils.logInfo("***********LISTAR*CADETES*MAS*CERCANOS************");
+            Utils.logInfo("Se listan los cadetes mas cercanos al punto: " + latitud + " - " + longitud);
         } catch (Exception exe) {
-            Utils.logWs("EnviosYa", " ***********LISTAR*4*CADETES*MAS*CERCANOS************");
-            Utils.logWs("EnviosYa", "Error:" + exe.getMessage());
+            Utils.logError(" ***********LISTAR*4*CADETES*MAS*CERCANOS************");
+            Utils.logError(exe.getMessage());
         }
-        return list;
-    }
-    
-    public double obtenerLatCadete(CadetEntity cadet) {
-        return 34;
+        return todos;
     }
 
-    public double obtenerLongCadete(CadetEntity cadet) {
-        return 38;
-    }
-    
     public Cadet buscarUnCadete(Integer id) {
         Cadet cadete = new Cadet();
 
@@ -155,33 +155,34 @@ public class CadetBean {
             cadete.setApellido(ent.getApellido());
             cadete.setCi(ent.getCi());
             cadete.setEmail(ent.getEmail());
+
+            Utils.logInfo("***********BUSCAR*CADETE*POR*ID************");
+            Utils.logInfo("Se busco el cadete con id: " + id);
         } catch (Exception exe) {
-            Utils.logWs("EnviosYa", " ***********BUSCAR*CADETE*POR*ID************");
-            Utils.logWs("EnviosYa", "Error:" + exe.getMessage());
+            Utils.logError(" ***********BUSCAR*CADETE*POR*ID************");
+            Utils.logError(exe.getMessage());
         }
         return cadete;
     }
 
     public CadetEntity actualizarRating(String usuario, String contrasena, Integer id, Integer raiting) {
         CadetEntity cadete = null;
-
         try {
-            //if (esCadete(usuario, contrasena)) {
             CadetEntity ent = em.find(CadetEntity.class, id);
-            Integer raitingBd = Integer.valueOf(ent.getRating());
+            Integer raitingBd = ent.getRating();
             Integer promedio = (raiting + raitingBd) / 2;
-            String prom = String.valueOf(promedio);
 
             cadete = em.find(CadetEntity.class, id);
 
-            cadete.setRating(prom);
+            cadete.setRating(promedio);
 
             em.merge(cadete);
 
-    //}
+            Utils.logInfo("***********ACTUALIZAR*RATING************");
+            Utils.logInfo("Se actualizo correctamente el rating");
         } catch (Exception exe) {
-            Utils.logWs("EnviosYa", " ***********ACTUALIZAR*RATING************");
-            Utils.logWs("EnviosYa", "Error:" + exe.getMessage());
+            Utils.logError(" ***********ACTUALIZAR*RATING************");
+            Utils.logError(exe.getMessage());
         }
         return cadete;
     }
@@ -199,8 +200,8 @@ public class CadetBean {
             }
 
         } catch (Exception exe) {
-            Utils.logWs("EnviosYa", " ***********ES*CADETE*************");
-            Utils.logWs("EnviosYa", "Error:" + exe.getMessage());
+            Utils.logError(" ***********ES*CADETE*************");
+            Utils.logError(exe.getMessage());
         }
         return esCad;
     }

@@ -13,7 +13,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -25,9 +24,8 @@ public class VehicleEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-
-    @Column(length = 20)
-    @NotNull
+       
+    @Column(length = 30)
     private String matricula;
     
     @Column(length = 1000)
@@ -35,11 +33,11 @@ public class VehicleEntity implements Serializable {
     
     @ManyToOne
     private CadetEntity cadete;
-
+    
     //CONSTRUCTOR
     public VehicleEntity() {
     }
-    
+
     //SET AND GET
     public Integer getId() {
         return id;
@@ -72,5 +70,4 @@ public class VehicleEntity implements Serializable {
     public void setCadete(CadetEntity cadete) {
         this.cadete = cadete;
     }
-    
 }
