@@ -6,47 +6,45 @@
 
 package wscadet;
 
-
 import cadet.CadetBean;
 import com.google.gson.Gson;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Produces;
 
 /**
  *
  * @author Vivi
  */
+
 @Path("cadete")
 public class CadetRest {
-
     private Gson gson = new Gson();
     @EJB
     private CadetBean cadete;
-
+    
     @Context
     private UriInfo context;
 
     /**
-     * Creates a new instance of CadetRest
+     * Creates a new instance of ClientRest
      */
     public CadetRest() {
     }
-
+   
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public String agregar(@QueryParam("usuario") String usuario, @QueryParam("contrasena") String contrasena,
-            @QueryParam("ci") Integer ci, @QueryParam("nombre") String nombre,
+            @QueryParam("ci") Integer ci, @QueryParam("nombre") String nombre, 
             @QueryParam("apellido") String apellido, @QueryParam("email") String email) {
         return gson.toJson(cadete.agregarCadete(usuario, contrasena, ci, nombre, apellido, email));
     }
@@ -69,13 +67,13 @@ public class CadetRest {
     
     //obtener
     @GET 
+    @Path("/obtenerCadetes")
     @Produces(MediaType.APPLICATION_JSON)
     public String obtenerCadetes() {
         return gson.toJson(cadete.listarCadetes());
     }
-    
+        
     @GET 
-    @Path("/{latitud}/{longitud}")
     @Produces(MediaType.APPLICATION_JSON)
     public String obtenerCadetesMasCercanos(@QueryParam("latitud") String latitud, 
             @QueryParam("longitud") String longitud) {
@@ -84,17 +82,17 @@ public class CadetRest {
     }
 
     @GET
-    @Path("/{id}")
+    @Path("/obtenerUnCadete")
     @Produces(MediaType.APPLICATION_JSON)
-    public String obtenerUnCadete(@PathParam("id") int id) {
+    public String obtenerUnCadete(@QueryParam("id") int id) {
         return gson.toJson(cadete.buscarUnCadete(id));
     }
     
     @PUT
-    @Path("/{idCadete}")
+    @Path("/actualizarRating")
     @Consumes(MediaType.APPLICATION_JSON)
     public String actualizarRating(@QueryParam("usuario") String usuario, @QueryParam("contrasena") String contrasena,
-            @PathParam("idCadete") Integer idCadete, @QueryParam("rating") Integer rating) {
+            @QueryParam("idCadete") Integer idCadete, @QueryParam("rating") Integer rating) {
         //hace un promedio entre el que tiene y el que le estan pasando por parametros
         return gson.toJson(cadete.actualizarRating(usuario, contrasena, idCadete, rating));
     }
