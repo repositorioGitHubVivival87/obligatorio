@@ -39,22 +39,6 @@ public class ReviewRest {
     public ReviewRest() {
     }
 
-    
-    @GET 
-    @Produces(MediaType.APPLICATION_JSON)
-    public String obtenerReview() {
-        return gson.toJson(review.listarReview());
-    }
-    
-    @PUT 
-    @Consumes(MediaType.APPLICATION_JSON)
-    public String modificar(@QueryParam("id") Integer id,
-            @QueryParam("comment") String comment, 
-            @QueryParam("rating") Integer rating, 
-            @QueryParam("status") String status) {
-        return gson.toJson(review.modificarReview(id, comment, rating, status));
-    }
-       
     //ESTE METODO HARIA EL ALTA DE REVIEW
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -63,39 +47,57 @@ public class ReviewRest {
             @QueryParam("rating") Integer rating, 
             @QueryParam("comment") String comentario,
             @QueryParam("idCliente") Integer idCliente) {
-        return gson.toJson("");
+        return gson.toJson(review.calificarEnvio(idEnvio, idCadete, rating, comentario, idCliente));
     }
-        
+    
+    @PUT 
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String modificar(@QueryParam("id") Integer id,
+            @QueryParam("comment") String comment, 
+            @QueryParam("rating") Integer rating, 
+            @QueryParam("status") String estado) {
+        return gson.toJson(review.modificarReview(id, comment, rating, estado));
+    }
+     
     @GET 
-    @Path("/{idCliente}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String obtenerReviews() {
+        return gson.toJson(review.listarReview());
+    }
+    
+    @GET 
+    @Path("/listarEnviosPendientesCalificacion")
     @Produces(MediaType.APPLICATION_JSON)
     public String listarEnviosPendientesCalificacion(@QueryParam("idCliente") Integer idCliente) {
         //pide a shipment todos los envios de este idCliente
-    //si no tiene review para cada shipment lo agrego a la lista a retornar
-        return gson.toJson("");
+        //si no tiene review para cada shipment lo agrego a la lista a retornar
+        return gson.toJson(review.listarEnviosPendientesCalificacion(idCliente));
     }
 
-//    @GET 
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public String listarCalificacionesCadete(@QueryParam("idCadete") Integer idCadete) {
-//        //pide a shipment todos los envios de este idCadete
-//        //si tiene review para cada shipment lo agrego a la lista a retornar
-//        return gson.toJson("");
-//    }
+    @GET 
+    @Path("/listarCalificacionesCadetes")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String listarCalificacionesCadete(@QueryParam("idCadete") Integer idCadete) {
+        //pide a shipment todos los envios de este idCadete
+        //si tiene review para cada shipment lo agrego a la lista a retornar
+        return gson.toJson("");
+    }
     
-//    @GET 
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public String rechazarCalificacionCadete(@QueryParam("idCliente") Integer idCliente) {
-//        //llama al metodo anterior: listarCalificacionesCadete
-//        // y puede setear el estado de la review en rechazado(rejected)
-//        return gson.toJson("");
-//    }
+    @GET 
+    @Path("/rechazarCalificacionCadete")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String rechazarCalificacionCadete(@QueryParam("idCliente") Integer idCliente) {
+        //llama al metodo anterior: listarCalificacionesCadete
+        // y puede setear el estado de la review en rechazado(rejected)
+        return gson.toJson("");
+    }
     
-//    @GET 
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public String listarCalificacionNoAprobadas(@QueryParam("idCliente") Integer idCliente) {
-//        //pide a shipment todos los envios con  reviews "no aprobado" y lo agrego a la lista a retornar
-//        return gson.toJson("");
-//    }  
+    @GET 
+    @Path("/listarCalificacionesNoAprobadas")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String listarCalificacionNoAprobadas(@QueryParam("idCliente") Integer idCliente) {
+        //pide a shipment todos los envios con  reviews "no aprobado" y lo agrego a la lista a retornar
+        return gson.toJson("");
+    }  
     
 }
