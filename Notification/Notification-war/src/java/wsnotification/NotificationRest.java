@@ -70,32 +70,42 @@ public class NotificationRest {
     }
 
     @POST
+    @Path("/notificarRecepcionEnvio")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String notificarRecepcionEnvio(@QueryParam("idEnvio") Integer idEnvio,
+            @QueryParam("idCadete") Integer idCadete,
+            @QueryParam("direccionEnvia") String direccionEnvia,
+            @QueryParam("direccionRecibe") String direccionRecibe,
+            @QueryParam("clienteEnvia") String clienteEnvia,
+            @QueryParam("clienteRecibe") String clienteRecibe,
+            @QueryParam("emailEnvia") String emailEnvia,
+            @QueryParam("emailRecibe") String emailRecibe,
+            @QueryParam("costoEnvio") Double costoEnvio,
+            @QueryParam("fechaRecibe") String fechaRecibido,
+            @QueryParam("horaRecibe") String horaRecibido) {
+        return gson.toJson(notification.notificarRecepcionEnvio(idEnvio, idCadete, direccionEnvia,
+            direccionRecibe, clienteEnvia, clienteRecibe, emailEnvia, emailRecibe, costoEnvio, 
+            fechaRecibido, horaRecibido));
+    }
+    
+    @POST
+    @Path("/notificarEnvioCadete")
     @Consumes(MediaType.APPLICATION_JSON)
     public String notificarEnvioCadete(@QueryParam("idEnvio") Integer idEnvio,
             @QueryParam("idCadete") Integer idCadete,
             @QueryParam("direccionEnvia") String direccionEnvia,
-            @QueryParam("direccionRecibe") String direccionRecibe,
-            @QueryParam("clienteEnvia") Integer clienteEnvia,
-            @QueryParam("clienteRecibe") Integer clienteRecibe,
-            @QueryParam("costoEnvio") Double costoEnvio) {
-        return gson.toJson(notification.notificarEnvioCadete(idEnvio, idCadete, direccionEnvia, 
-                direccionRecibe, clienteEnvia, clienteRecibe, costoEnvio));
-    }
-    
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    public String notificarRecepcionEnvio(@QueryParam("idEnvio") Integer idEnvio,
-            @QueryParam("emailEnvia") String emailEnvia,
             @QueryParam("emailRecibe") String emailRecibe,
-            @QueryParam("nombreCadete") String nombreCadete,
-            @QueryParam("fechaRecibe") Integer fechaRecibido,
-            @QueryParam("horaRecibe") Integer horaRecibido,
+            @QueryParam("direccionRecibe") String direccionRecibe,
+            @QueryParam("clienteEnvia") String clienteEnvia,
+            @QueryParam("clienteRecibe") String clienteRecibe,
+            @QueryParam("emailCadete") String emailCadete,
             @QueryParam("costoEnvio") Double costoEnvio) {
-        return gson.toJson(notification.notificarRecepcionEnvio(idEnvio, emailEnvia, emailRecibe, nombreCadete,
-                fechaRecibido, horaRecibido, costoEnvio));
+        return gson.toJson(notification.notificarEnvioCadete(idEnvio, idCadete, direccionEnvia,
+            direccionRecibe, clienteEnvia, clienteRecibe, emailCadete, costoEnvio));
     }
     
     @POST
+    @Path("/notificarReview")
     @Consumes(MediaType.APPLICATION_JSON)
     public String notificarReview(@QueryParam("idReview") Integer idReview,
             @QueryParam("idEnvio") Integer idEnvio,
