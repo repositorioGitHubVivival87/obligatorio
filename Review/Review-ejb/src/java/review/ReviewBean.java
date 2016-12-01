@@ -6,7 +6,7 @@
 
 package review;
 
-import herramientas.Utils;
+import tools.Utils;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -23,7 +23,8 @@ import javax.persistence.PersistenceContext;
 @LocalBean
 public class ReviewBean {
     private static final String ADMIN = "ADMIN";
-
+    Utils util = new Utils();
+    
     @PersistenceContext
     private EntityManager em;
 
@@ -35,14 +36,27 @@ public class ReviewBean {
         System.out.println("INSTANCIA REVIEW BEAN");
     }
     
-    public ReviewEntity agregarReview(String comentario, Integer rating, String estado) {
+    public ReviewEntity calificarEnvio(Integer idEnvio, Integer idCadete, Integer rating, 
+            String comentario, Integer idCliente) {
         ReviewEntity review = null;
         try {
-            
-
+            //Aqui llamamos al metodo que expone el modulo Client para validar el cliente
+            //Verificamos que no exista una review para esta envio
+            //Validamos el comentario
+            //Detectamos palabras inadecuadas
+            //Calificamos la semantica
+            //Actualizamos el estado de la review y los datos
+            review = new ReviewEntity();
+            review.setComentario(comentario);
+            review.setEstado(comentario);
+            review.setRating(rating);
+            //Actualizamos el rating del Cadete mediante el metodo que expone el modulo cadet
+            //Notificamos la review
+            em.persist(review);
+            //}
         } catch (Exception exe) {
-            Utils.logWS("EnviosYa", " ***********ALTA*REVIEW************");
-            Utils.logWS("EnviosYa", "Error:" + exe.getMessage());
+            Utils.logError(" ***********Calificar*Envio************");
+            Utils.logError(exe.getMessage());
         }
         return review;
     }
@@ -50,11 +64,18 @@ public class ReviewBean {
     public ReviewEntity modificarReview(Integer id, String comentario, Integer rating, String estado) {
         ReviewEntity review = null;
         try {
-           
+           //if (esCliente(usuario, contrasena)) {
+            review = em.find(ReviewEntity.class, id);
+            review.setComentario(comentario);
+            review.setEstado(estado);
+            review.setRating(rating);
+            
+            em.merge(review);
+            //}
 
         } catch (Exception exe) {
-            Utils.logWS("EnviosYa", " ***********MODIFICACION*REVIEW************");
-            Utils.logWS("EnviosYa", "Error:" + exe.getMessage());
+            Utils.logError(" ***********MODIFICACION*REVIEW************");
+            Utils.logError("Error:" + exe.getMessage());
         }
         return review;
     }
@@ -66,8 +87,8 @@ public class ReviewBean {
             em.remove(review);
             ret = true;
         } catch (Exception exe) {
-            Utils.logWS("EnviosYa", " ***********ELIMINACION*REVIEW************");
-            Utils.logWS("EnviosYa", "Error:" + exe.getMessage());
+            Utils.logError(" ***********ELIMINACION*REVIEW************");
+            Utils.logError("Error:" + exe.getMessage());
         }
         return ret;
     }
@@ -76,22 +97,39 @@ public class ReviewBean {
         List<ReviewEntity> list = new ArrayList();
         try {
             list = em
-                    .createQuery("select c from ReviewEntity c")
+                    .createNativeQuery("select * from ReviewEntity c")
                     .getResultList();
         } catch (Exception exe) {
-            Utils.logWS("EnviosYa", " ***********LISTAR*REVIEW************");
-            Utils.logWS("EnviosYa", "Error:" + exe.getMessage());
+            Utils.logError(" ***********LISTAR*REVIEW************");
+            Utils.logError(exe.getMessage());
         }
         return list;
     }
 
+    public List<ReviewEntity> listarEnviosPendientesCalificacion(Integer idCliente) {
+        List<ReviewEntity> list = new ArrayList();
+        try {
+            list = em
+                    .createNativeQuery("select * from ReviewEntity c")
+                    .getResultList();
+        } catch (Exception exe) {
+            Utils.logError(" ***********LISTAR*REVIEW************");
+            Utils.logError("Error:" + exe.getMessage());
+        }
+        return list;
+    }        
+            
     public Review buscarReview(Integer id) {
         Review review = new Review();
         try {
-
+            ReviewEntity ent = em.find(ReviewEntity.class, id);
+            ent.setComentario(ent.getComentario());
+            ent.setEstado(ent.getEstado());
+            ent.setRating(ent.getRating());
+            
         } catch (Exception exe) {
-            Utils.logWS("EnviosYa", " ***********BUSCAR*REVIEW*POR*ID************");
-            Utils.logWS("EnviosYa", "Error:" + exe.getMessage());
+            Utils.logError(" ***********BUSCAR*REVIEW*POR*ID************");
+            Utils.logError("Error:" + exe.getMessage());
         }
         return review;
     }   
