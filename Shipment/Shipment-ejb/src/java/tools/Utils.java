@@ -5,16 +5,10 @@
 
 package tools;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 import log.Escribir;
 
@@ -24,13 +18,13 @@ import log.Escribir;
  */
 public class Utils {
 
-    private static Escribir log = new Escribir();
-    private static String modulo = "CLIENT";
+    private static final Escribir log = new Escribir();
+    private static final String  modulo = "CLIENT";
     
     public static void logInfo(String mensaje) {
         try {
             
-            log.logInfo(" [" + modulo + "] " + mensaje);
+            Escribir.logInfo(" [" + modulo + "] " + mensaje);
 
         } catch (Exception ex) {
             System.out.println("Error Write Log " + ex.getMessage());
@@ -40,7 +34,7 @@ public class Utils {
     public static void logWarn(String mensaje) {
         try {
             
-            log.logWarning(" [" + modulo + "] " + mensaje);
+            Escribir.logWarning(" [" + modulo + "] " + mensaje);
 
         } catch (Exception ex) {
             System.out.println("Error Write Log " + ex.getMessage());
@@ -50,7 +44,7 @@ public class Utils {
     public static void logError(String mensaje) {
         try {
             
-            log.logError(" [" + modulo + "] " + mensaje);
+            Escribir.logError(" [" + modulo + "] " + mensaje);
 
         } catch (Exception ex) {
             System.out.println("Error Write Log " + ex.getMessage());

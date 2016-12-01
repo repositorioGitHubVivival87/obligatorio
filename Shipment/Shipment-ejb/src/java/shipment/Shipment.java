@@ -20,6 +20,10 @@ public class Shipment {
     private Double comision;
     private String foto;
     private String estado;
+    private Integer idCadete;
+    private Integer idClienteEnvia;
+    private Integer idClienteRecibe;
+    private Double costoEnvio;
     
     
     //CONSTRUCTOR
@@ -89,6 +93,38 @@ public class Shipment {
 
     public void setEstado(String estado) {
         this.estado = estado;
+    }
+
+    public Integer getIdCadete() {
+        return idCadete;
+    }
+
+    public void setIdCadete(Integer idCadete) {
+        this.idCadete = idCadete;
+    }
+
+    public Integer getIdClienteEnvia() {
+        return idClienteEnvia;
+    }
+
+    public void setIdClienteEnvia(Integer idClienteEnvia) {
+        this.idClienteEnvia = idClienteEnvia;
+    }
+
+    public Integer getIdClienteRecibe() {
+        return idClienteRecibe;
+    }
+
+    public void setIdClienteRecibe(Integer idClienteRecibe) {
+        this.idClienteRecibe = idClienteRecibe;
+    }
+
+    public Double getCostoEnvio() {
+        return costoEnvio;
+    }
+
+    public void setCostoEnvio(Double costoEnvio) {
+        this.costoEnvio = costoEnvio;
     }
     
 }

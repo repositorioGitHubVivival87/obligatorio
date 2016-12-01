@@ -45,6 +45,17 @@ public class ShipmentEntity implements Serializable {
     @Column(length = 1)
     private String estado;
     
+    @Column(length = 1)
+    private Integer idCadete;
+    
+    @Column(length = 1)
+    private Integer idClienteEnvia;
+    
+    @Column(length = 1)
+    private Integer idClienteRecibe;
+    
+    @Column(length = 1)
+    private Double costoEnvio;
     
     //CONSTRUCTOR
     public ShipmentEntity() {
@@ -113,6 +124,38 @@ public class ShipmentEntity implements Serializable {
 
     public void setEstado(String estado) {
         this.estado = estado;
+    }
+
+    public Integer getIdCadete() {
+        return idCadete;
+    }
+
+    public void setIdCadete(Integer idCadete) {
+        this.idCadete = idCadete;
+    }
+
+    public Integer getIdClienteEnvia() {
+        return idClienteEnvia;
+    }
+
+    public void setIdClienteEnvia(Integer idClienteEnvia) {
+        this.idClienteEnvia = idClienteEnvia;
+    }
+
+    public Integer getIdClienteRecibe() {
+        return idClienteRecibe;
+    }
+
+    public void setIdClienteRecibe(Integer idClienteRecibe) {
+        this.idClienteRecibe = idClienteRecibe;
+    }
+
+    public Double getCostoEnvio() {
+        return costoEnvio;
+    }
+
+    public void setCostoEnvio(Double costoEnvio) {
+        this.costoEnvio = costoEnvio;
     }
     
 }
