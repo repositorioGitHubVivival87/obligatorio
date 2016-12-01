@@ -18,7 +18,7 @@ import javax.persistence.Id;
  * @author Vivi
  */
 @Entity
-public class NotficationEntity implements Serializable {
+public class NotificationEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,7 +34,7 @@ public class NotficationEntity implements Serializable {
     private String mensaje;
     
     //CONSTRUCTOR
-    public NotficationEntity() {
+    public NotificationEntity() {
     }
     
     //SET AND GET

@@ -3,17 +3,14 @@
  * and open the template in the editor.
  */
 
-package herramientas;
+package tools;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.text.DateFormat;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
+import log.Escribir;
 
 /**
  *
@@ -21,24 +18,35 @@ import java.util.Locale;
  */
 public class Utils {
 
-    public static void logWS(String moduleName, String mensaje) {
+    private static final Escribir log = new Escribir();
+    private static final String modulo = "CLIENT";
+    
+    public static void logInfo(String mensaje) {
         try {
-            DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-            DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+            
+            Escribir.logInfo(" [" + modulo + "] " + mensaje);
 
-            Date fecha = new Date();
-            String currentDate = dateFormat.format(fecha);
-            String currentTime = timeFormat.format(fecha);
-            Long threadId = Thread.currentThread().getId();
+        } catch (Exception ex) {
+            System.out.println("Error Write Log " + ex.getMessage());
+        }
+    }
 
-            String fileoutput = "../logs/" + moduleName + "_" + currentDate + "_" + Long.toString(threadId) + ".log";
-            File outputFile = new File(fileoutput);
-            BufferedWriter salida = new BufferedWriter(new FileWriter(outputFile, true));
-            salida.write(currentTime + " : " + mascararString(mensaje));
-            salida.newLine();
-            salida.close();
+    public static void logWarn(String mensaje) {
+        try {
+            
+            Escribir.logWarning(" [" + modulo + "] " + mensaje);
 
-        } catch (IOException ex) {
+        } catch (Exception ex) {
+            System.out.println("Error Write Log " + ex.getMessage());
+        }
+    }
+
+    public static void logError(String mensaje) {
+        try {
+            
+            Escribir.logError(" [" + modulo + "] " + mensaje);
+
+        } catch (Exception ex) {
             System.out.println("Error Write Log " + ex.getMessage());
         }
     }
@@ -173,5 +181,31 @@ public class Utils {
             return false;
         }
         return true;
+    }
+
+    public static String getStringMessageDigest(String message) {
+        byte[] digest = null;
+        byte[] buffer = message.getBytes();
+        try {
+            MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
+            messageDigest.reset();
+            messageDigest.update(buffer);
+            digest = messageDigest.digest();
+        } catch (NoSuchAlgorithmException ex) {
+            System.out.println("Error creando Digest");
+        }
+        return toHexadecimal(digest);
+    }
+    
+    private static String toHexadecimal(byte[] digest) {
+        String hash = "";
+        for (byte aux : digest) {
+            int bb = aux & 0xff;
+            if (Integer.toHexString(bb).length() == 1) {
+                hash += "0";
+            }
+            hash += Integer.toHexString(bb);
+        }
+        return hash;
     }
 }
